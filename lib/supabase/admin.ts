@@ -7,7 +7,12 @@
 //
 // Safe usage: Server Components, Route Handlers, Server Actions.
 // NEVER use: 'use client' components, pages that run in the browser.
+//
+// The `import 'server-only'` below is compiler-enforced: if a Client Component
+// ever imports this module, the Next.js build will fail with a clear error.
 // =============================================================================
+
+import 'server-only'
 
 import { createClient } from '@supabase/supabase-js'
 

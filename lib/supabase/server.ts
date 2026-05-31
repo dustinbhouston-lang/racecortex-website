@@ -1,3 +1,9 @@
+// `server-only` is compiler-enforced: importing this module from a Client
+// Component will fail the Next.js build with a clear error. This module uses
+// await cookies() (a server-only Next.js API) so the constraint is inherent;
+// the import makes it explicit and prevents accidental client-side import.
+import 'server-only'
+
 import { createServerClient } from '@supabase/ssr'
 import { cookies } from 'next/headers'
 
