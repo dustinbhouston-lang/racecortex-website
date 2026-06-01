@@ -1,0 +1,15 @@
+# Normalize all text files to LF in the repository (web repo; deploys on Linux/Vercel).
+# Prevents the recurring CRLF/LF working-tree churn on Windows checkouts.
+* text=auto eol=lf
+
+# Treat common binary assets as binary (never normalize).
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.webp binary
+*.woff  binary
+*.woff2 binary
+*.ttf  binary
+*.otf  binary
