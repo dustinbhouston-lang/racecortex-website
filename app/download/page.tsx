@@ -21,6 +21,7 @@ import { SignOutButton } from '@/components/sign-out-button'
  *   ?error=session_expired   → shown in unauth branch (above tabs)
  *   ?error=invalid_token     → shown in unauth branch (above tabs)
  *   ?error=beta_not_active   → shown in auth branch (inside DownloadSection)
+ *   ?error=server_error      → shown in auth branch (inside DownloadSection)
  */
 
 interface DownloadPageProps {
