@@ -46,7 +46,7 @@ export function DownloadSection({ betaActive, errorMessage }: DownloadSectionPro
             <li>
               <span className="text-foreground font-medium">1.</span> Run{' '}
               <code className="rounded bg-secondary px-1.5 py-0.5 font-mono text-xs text-foreground">
-                PitWall AI Setup 1.0.0.exe
+                RaceCortex Setup 1.0.0.exe
               </code>
             </li>
             <li>
@@ -119,7 +119,7 @@ export function DownloadSection({ betaActive, errorMessage }: DownloadSectionPro
         Download installer
       </a>
       <p className="text-xs text-muted-foreground text-center">
-        PitWall AI Setup 1.0.0.exe · Windows 10/11 · ~249 MB
+        RaceCortex Setup 1.0.0.exe · Windows 10/11 · ~249 MB
       </p>
     </div>
   )

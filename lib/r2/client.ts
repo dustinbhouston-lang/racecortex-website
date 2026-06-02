@@ -9,7 +9,7 @@ import { S3Client } from '@aws-sdk/client-s3'
  * INSTALLER_OBJECT_KEY — byte-exact key of the installer in the R2 bucket.
  * Capital P, capital W, spaces included. Must match the object name precisely.
  */
-export const INSTALLER_OBJECT_KEY = 'PitWall AI Setup 1.0.0.exe'
+export const INSTALLER_OBJECT_KEY = 'RaceCortex Setup 1.0.0.exe'
 
 /**
  * getR2Client() — lazy factory returning an S3Client configured for Cloudflare R2.
