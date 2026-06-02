@@ -1,7 +1,9 @@
 "use client"
 
 import { useState } from "react"
+import Link from "next/link"
 import { Menu, X } from "lucide-react"
+import { NavbarUser } from "@/components/navbar-user"
 
 const navLinks = [
   { label: "AI Engineer", href: "#ai-engineer" },
@@ -41,12 +43,8 @@ export function Navbar() {
         </div>
 
         <div className="hidden items-center gap-3 md:flex">
-          <a
-            href="#"
-            className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground"
-          >
-            Log in
-          </a>
+          {/* Desktop: full auth-aware dropdown (signed in = email + menu; signed out = Log in link) */}
+          <NavbarUser />
           <a
             href="#pricing"
             className="inline-flex h-10 items-center rounded-sm bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
@@ -78,12 +76,14 @@ export function Navbar() {
               </a>
             ))}
             <div className="mt-2 flex flex-col gap-3">
-              <a
-                href="#"
-                className="text-base font-medium text-muted-foreground"
+              {/* Mobile: simple link to /download — full dropdown UX is fiddly inside mobile sheets */}
+              <Link
+                href="/download"
+                onClick={() => setMobileOpen(false)}
+                className="text-base font-medium text-muted-foreground transition-colors hover:text-foreground"
               >
                 Log in
-              </a>
+              </Link>
               <a
                 href="#pricing"
                 className="inline-flex h-12 items-center justify-center rounded-sm bg-primary px-5 text-base font-semibold text-primary-foreground"
