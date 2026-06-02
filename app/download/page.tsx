@@ -96,11 +96,17 @@ export default async function DownloadPage({ searchParams }: DownloadPageProps) 
 
   const betaActive = profile?.beta_active === true
 
-  // beta_not_active error arrives in the AUTH branch (user IS signed in, just lacks access)
-  const downloadError =
-    error === 'beta_not_active'
-      ? 'Beta access not yet active. Please redeem your invite code in the RaceCortex app, or contact Dustin.'
-      : undefined
+  // Error codes that arrive in the AUTH branch (user IS signed in):
+  //   beta_not_active — signed-in user lacking beta access, redirected by /api/download
+  //   server_error    — R2 client failure after auth passed, redirected by /api/download
+  let downloadError: string | undefined
+  if (error === 'beta_not_active') {
+    downloadError =
+      'Beta access not yet active. Please redeem your invite code in the RaceCortex app, or contact Dustin.'
+  } else if (error === 'server_error') {
+    downloadError =
+      'Something went wrong generating your download link. Please try again in a moment.'
+  }
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-background px-5 py-24 lg:px-8">
