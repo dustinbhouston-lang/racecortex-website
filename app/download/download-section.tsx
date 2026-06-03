@@ -13,16 +13,70 @@
  */
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
+import { redeemInviteCode } from './actions'
 
 interface DownloadSectionProps {
   /** Whether this user has profiles.beta_active = true */
   betaActive: boolean
   /** Error message from ?error=beta_not_active redirect */
   errorMessage?: string
+}
+
+function RedeemCodeForm() {
+  const router = useRouter()
+  const [code, setCode] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | undefined>()
+  const [success, setSuccess] = useState(false)
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!code.trim()) return
+    setLoading(true)
+    setError(undefined)
+    const result = await redeemInviteCode(code)
+    setLoading(false)
+    if (result.ok) {
+      setSuccess(true)
+      router.refresh()
+    } else {
+      setError(result.error)
+    }
+  }
+
+  return (
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+      <div className="flex gap-2">
+        <Input
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          placeholder="XXXX-XXXX-XXXX"
+          className="font-mono rounded-sm"
+          disabled={loading || success}
+          aria-label="Invite code"
+        />
+        <Button
+          type="submit"
+          className="rounded-sm shrink-0"
+          disabled={loading || success || !code.trim()}
+        >
+          {loading ? 'Redeeming…' : 'Redeem code'}
+        </Button>
+      </div>
+      {success && (
+        <p className="font-mono text-sm text-primary">Beta access unlocked!</p>
+      )}
+      {error && (
+        <p className="text-sm text-destructive">{error}</p>
+      )}
+    </form>
+  )
 }
 
 export function DownloadSection({ betaActive, errorMessage }: DownloadSectionProps) {
@@ -58,7 +112,7 @@ export function DownloadSection({ betaActive, errorMessage }: DownloadSectionPro
             </li>
             <li>
               <span className="text-foreground font-medium">3.</span> Sign in to the app with
-              your same RaceCortex account, then enter your invite code.
+              your same RaceCortex account.
             </li>
           </ol>
           <p className="mt-4 text-sm text-muted-foreground">
@@ -69,7 +123,7 @@ export function DownloadSection({ betaActive, errorMessage }: DownloadSectionPro
     )
   }
 
-  // Beta access not yet active — show disabled state
+  // Beta access not yet active — show redemption form
   if (!betaActive) {
     return (
       <div className="flex flex-col gap-4">
@@ -78,12 +132,12 @@ export function DownloadSection({ betaActive, errorMessage }: DownloadSectionPro
             <AlertDescription>{errorMessage}</AlertDescription>
           </Alert>
         )}
-        <Alert>
-          <AlertDescription>
-            Beta access not yet active. Please redeem your invite code in the RaceCortex app, or
-            contact Dustin if you have not received an invite.
-          </AlertDescription>
-        </Alert>
+        <div className="flex flex-col gap-3">
+          <p className="text-sm text-muted-foreground">
+            Enter the invite code from your invitation email to unlock your download.
+          </p>
+          <RedeemCodeForm />
+        </div>
         <Button
           disabled
           size="lg"
