@@ -57,9 +57,9 @@ export function Hero() {
         {/* Stats row */}
         <div className="mt-16 grid w-full grid-cols-3 gap-4 border-t border-border pt-8 lg:mt-20 lg:gap-8">
           {[
-            { value: "0.3s", label: "Avg. AI-found improvement" },
-            { value: "12K+", label: "Drivers coached by AI" },
-            { value: "50M+", label: "Laps analyzed by Cortex" },
+            { value: "120+", label: "Telemetry channels" },
+            { value: "60Hz", label: "Live sampling" },
+            { value: "Real-time", label: "AI voice coaching" },
           ].map((stat) => (
             <div key={stat.label} className="flex flex-col items-center">
               <span className="font-mono text-2xl font-bold text-primary sm:text-3xl lg:text-4xl">

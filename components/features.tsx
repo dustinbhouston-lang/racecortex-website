@@ -12,13 +12,13 @@ const features = [
     icon: Gauge,
     title: "Lap Comparison",
     description:
-      "Overlay your laps against personal bests, teammates, or pro benchmarks. See exactly where you gain or lose time.",
+      "Compare your laps against personal bests and see exactly where you gain or lose time.",
   },
   {
     icon: Layers,
     title: "Setup Lab",
     description:
-      "Data-driven car setup recommendations. Iterate suspension, aero, and differential settings with predicted outcomes.",
+      "Tell Clive how the car feels — understeer, curbs, traction — and get manufacturer-grounded setup changes for supported cars. Full Setup Lab coming.",
   },
   {
     icon: Radio,
@@ -30,7 +30,7 @@ const features = [
     icon: Zap,
     title: "Stint Strategy",
     description:
-      "Plan fuel loads, tire stints, and pit windows. Simulate race scenarios before the green flag drops.",
+      "Live fuel, stint, and pit-window strategy — your engineer calls the numbers as the race unfolds.",
   },
 ]
 

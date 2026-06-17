@@ -5,7 +5,7 @@ const steps = [
     number: "01",
     title: "CONNECT",
     description:
-      "Link RaceCortex to your sim. The AI engineer starts listening to your telemetry stream immediately -- zero config, zero performance impact.",
+      "Link RaceCortex to your sim. The AI engineer starts listening to your telemetry stream immediately — zero config, minimal performance impact.",
   },
   {
     number: "02",
@@ -17,7 +17,7 @@ const steps = [
     number: "03",
     title: "GET COACHED",
     description:
-      "Mid-session, the AI calls out braking cues, suggests lines, and flags setup imbalances. Like a real race engineer in your ear.",
+      "Mid-session, the AI calls out braking cues, suggests lines, and flags setup imbalances (with fixes for supported cars). Like a real race engineer in your ear.",
   },
   {
     number: "04",

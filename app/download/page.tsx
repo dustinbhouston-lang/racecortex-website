@@ -131,7 +131,7 @@ export default async function DownloadPage({ searchParams }: DownloadPageProps) 
               </p>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Full AI race engineer for iRacing. Real-time voice coaching,
-                120+ telemetry channels, lap delta analysis, and stint strategy planning. Requires
+                120+ telemetry channels, lap delta analysis, and live fuel & stint strategy. Requires
                 a compatible wheel base and Windows 10/11.
               </p>
             </div>

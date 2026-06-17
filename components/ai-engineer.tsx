@@ -46,7 +46,7 @@ const capabilities = [
   {
     icon: Sparkles,
     title: "Setup Recommendations",
-    description: "Analyzes your telemetry to suggest car setup changes with predicted lap time impact before you make a single adjustment.",
+    description: "Analyzes your telemetry and car balance to suggest manufacturer-grounded setup changes for supported cars.",
   },
 ]
 
