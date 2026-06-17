@@ -78,7 +78,7 @@ export function AiEngineer() {
               Core Feature
             </span>
           </span>
-          <h2 className="mt-6 font-mono text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-6xl">
+          <h2 className="mt-6 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-6xl">
             <span className="text-balance">
               AN ENGINEER THAT
               <br />
@@ -187,7 +187,7 @@ export function AiEngineer() {
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
                 <cap.icon size={22} />
               </div>
-              <h3 className="mt-4 font-mono text-base font-bold text-foreground">
+              <h3 className="mt-4 font-display text-base font-bold text-foreground">
                 {cap.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">

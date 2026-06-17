@@ -60,7 +60,7 @@ export function Pricing() {
           <span className="font-mono text-sm font-semibold uppercase tracking-widest text-primary">
             Pricing
           </span>
-          <h2 className="mt-4 font-mono text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             <span className="text-balance">Choose your racing tier</span>
           </h2>
           <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
@@ -83,7 +83,7 @@ export function Pricing() {
                   Most Popular
                 </span>
               )}
-              <h3 className="font-mono text-lg font-bold text-foreground">
+              <h3 className="font-display text-lg font-bold text-foreground">
                 {plan.name}
               </h3>
               <div className="mt-3 flex items-baseline gap-1">

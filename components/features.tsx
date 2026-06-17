@@ -42,7 +42,7 @@ export function Features() {
           <span className="font-mono text-sm font-semibold uppercase tracking-widest text-primary">
             Platform
           </span>
-          <h2 className="mt-4 font-mono text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             <span className="text-balance">Built around your AI engineer</span>
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
@@ -59,7 +59,7 @@ export function Features() {
               <div className="flex h-11 w-11 items-center justify-center rounded-sm bg-primary/10 text-primary">
                 <feature.icon size={22} />
               </div>
-              <h3 className="mt-5 font-mono text-lg font-bold text-foreground">
+              <h3 className="mt-5 font-display text-lg font-bold text-foreground">
                 {feature.title}
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
@@ -83,7 +83,7 @@ export function Features() {
               <span className="font-mono text-sm font-semibold uppercase tracking-widest text-primary">
                 Telemetry Dashboard
               </span>
-              <h3 className="mt-2 font-mono text-xl font-bold text-foreground sm:text-2xl lg:text-3xl">
+              <h3 className="mt-2 font-display text-xl font-bold text-foreground sm:text-2xl lg:text-3xl">
                 Every data point. One clear picture.
               </h3>
             </div>

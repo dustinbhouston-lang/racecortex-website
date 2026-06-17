@@ -49,7 +49,7 @@ export function TelemetryPreview() {
           <span className="font-mono text-sm font-semibold uppercase tracking-widest text-primary">
             Live Data
           </span>
-          <h2 className="mt-4 font-mono text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             <span className="text-balance">200+ channels. Zero guesswork.</span>
           </h2>
         </div>

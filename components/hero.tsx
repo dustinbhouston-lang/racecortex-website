@@ -25,7 +25,7 @@ export function Hero() {
           </span>
         </div>
 
-        <h1 className="font-mono text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-8xl">
+        <h1 className="font-display text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-8xl">
           <span className="text-balance">
             YOUR AI
             <br />

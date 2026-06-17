@@ -5,7 +5,7 @@ export function CtaSection() {
     <section className="relative px-5 py-20 lg:px-8 lg:py-32">
       <div className="mx-auto max-w-4xl">
         <div className="flex flex-col items-center rounded-sm border border-primary/20 bg-primary/5 px-6 py-16 text-center lg:px-12 lg:py-24">
-          <h2 className="font-mono text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+          <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             <span className="text-balance">
               YOUR AI ENGINEER
               <br />

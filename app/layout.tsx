@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
+import { Inter, Oxanium, IBM_Plex_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
@@ -8,9 +8,16 @@ const inter = Inter({
   variable: '--font-inter',
 })
 
-const spaceGrotesk = Space_Grotesk({
+const oxanium = Oxanium({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  weight: ['500', '600', '700'],
+  variable: '--font-oxanium',
+})
+
+const ibmPlexMono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-ibm-plex-mono',
 })
 
 export const viewport: Viewport = {
@@ -48,7 +55,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} bg-background`}>
+    <html lang="en" className={`${inter.variable} ${oxanium.variable} ${ibmPlexMono.variable} bg-background`}>
       <head>
         <link
           rel="stylesheet"
