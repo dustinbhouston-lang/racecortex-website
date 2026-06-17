@@ -1,8 +1,33 @@
-const footerLinks = {
-  Product: ["Features", "Pricing", "Telemetry", "Setup Lab", "Changelog"],
-  Simulators: ["iRacing", "ACC", "rFactor 2", "Automobilista 2", "Le Mans Ultimate"],
-  Company: ["About", "Blog", "Careers", "Contact"],
-  Legal: ["Privacy", "Terms", "Cookie Policy"],
+import Image from "next/image"
+
+type FooterLink = { label: string; soon?: boolean }
+
+const footerLinks: Record<string, FooterLink[]> = {
+  Product: [
+    { label: "Features" },
+    { label: "Pricing" },
+    { label: "Telemetry" },
+    { label: "Setup Lab" },
+    { label: "Changelog" },
+  ],
+  Simulators: [
+    { label: "iRacing" },
+    { label: "ACC", soon: true },
+    { label: "rFactor 2", soon: true },
+    { label: "Automobilista 2", soon: true },
+    { label: "Le Mans Ultimate", soon: true },
+  ],
+  Company: [
+    { label: "About" },
+    { label: "Blog" },
+    { label: "Careers" },
+    { label: "Contact" },
+  ],
+  Legal: [
+    { label: "Privacy" },
+    { label: "Terms" },
+    { label: "Cookie Policy" },
+  ],
 }
 
 export function Footer() {
@@ -12,17 +37,13 @@ export function Footer() {
         <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-5 lg:gap-8">
           {/* Brand */}
           <div className="lg:col-span-1">
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-primary-foreground">
-                  <path d="M2 9L9 2L16 9L9 16L2 9Z" fill="currentColor" />
-                  <path d="M5 9L9 5L13 9L9 13L5 9Z" fill="currentColor" opacity="0.5" />
-                </svg>
-              </div>
-              <span className="font-mono text-base font-bold tracking-tight text-foreground">
-                RACECORTEX
-              </span>
-            </div>
+            <Image
+              src="/brand/racecortex-logo-horizontal-white.png"
+              alt="RaceCortex"
+              width={2488}
+              height={372}
+              className="h-8 w-auto object-contain"
+            />
             <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
               Intelligence for the track.
               <br />
@@ -38,13 +59,22 @@ export function Footer() {
               </h4>
               <ul className="mt-4 flex flex-col gap-2.5">
                 {links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                    >
-                      {link}
-                    </a>
+                  <li key={link.label}>
+                    {link.soon ? (
+                      <span className="flex items-center gap-2 text-sm text-muted-foreground/50">
+                        {link.label}
+                        <span className="font-mono text-[10px] uppercase tracking-wider text-muted-foreground/40">
+                          Soon
+                        </span>
+                      </span>
+                    ) : (
+                      <a
+                        href="#"
+                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link.label}
+                      </a>
+                    )}
                   </li>
                 ))}
               </ul>

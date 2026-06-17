@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import Link from "next/link"
 import { Menu, X } from "lucide-react"
 import { NavbarUser } from "@/components/navbar-user"
@@ -18,16 +19,15 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
-        <a href="#" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-primary">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none" className="text-primary-foreground">
-              <path d="M2 9L9 2L16 9L9 16L2 9Z" fill="currentColor" />
-              <path d="M5 9L9 5L13 9L9 13L5 9Z" fill="currentColor" opacity="0.5" />
-            </svg>
-          </div>
-          <span className="font-mono text-lg font-bold tracking-tight text-foreground">
-            RACECORTEX
-          </span>
+        <a href="#" className="flex items-center">
+          <Image
+            src="/brand/racecortex-logo-horizontal-white.png"
+            alt="RaceCortex"
+            width={2488}
+            height={372}
+            className="h-8 w-auto object-contain"
+            priority
+          />
         </a>
 
         <div className="hidden items-center gap-8 md:flex">

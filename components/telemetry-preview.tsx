@@ -50,7 +50,7 @@ export function TelemetryPreview() {
             Live Data
           </span>
           <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            <span className="text-balance">200+ channels. Zero guesswork.</span>
+            <span className="text-balance">120+ channels. Zero guesswork.</span>
           </h2>
         </div>
 

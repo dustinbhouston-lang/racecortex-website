@@ -6,7 +6,7 @@ const features = [
     icon: Activity,
     title: "Live Telemetry",
     description:
-      "Stream real-time data from your simulator. Throttle, brake, steering, tire temps, and 200+ data channels at 60Hz.",
+      "Stream real-time data from your simulator. Throttle, brake, steering, tire temps, and 120+ telemetry channels, sampled up to 60Hz.",
   },
   {
     icon: Gauge,

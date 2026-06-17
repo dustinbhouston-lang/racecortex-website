@@ -22,7 +22,7 @@ const plans = [
     period: "/mo",
     description: "For competitive racers who want every advantage.",
     features: [
-      "Full 200+ channel telemetry",
+      "Full 120+ channel telemetry",
       "Unlimited session history",
       "AI Race Engineer",
       "All simulators supported",
