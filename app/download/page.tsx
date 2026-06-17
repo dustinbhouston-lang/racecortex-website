@@ -130,8 +130,8 @@ export default async function DownloadPage({ searchParams }: DownloadPageProps) 
                 RaceCortex v1.0.0
               </p>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                Full AI race engineer for iRacing, ACC, and rFactor 2. Real-time voice coaching,
-                200+ telemetry channels, lap delta analysis, and stint strategy planning. Requires
+                Full AI race engineer for iRacing. Real-time voice coaching,
+                120+ telemetry channels, lap delta analysis, and stint strategy planning. Requires
                 a compatible wheel base and Windows 10/11.
               </p>
             </div>

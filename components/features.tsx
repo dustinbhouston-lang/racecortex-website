@@ -24,7 +24,7 @@ const features = [
     icon: Radio,
     title: "Multi-Sim Support",
     description:
-      "Works with iRacing, Assetto Corsa Competizione, rFactor 2, and more. One platform, every sim.",
+      "Built for iRacing today — ACC, rFactor 2, and Le Mans Ultimate are on the roadmap. One AI engineer, every sim.",
   },
   {
     icon: Zap,
