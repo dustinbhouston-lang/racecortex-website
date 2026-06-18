@@ -14,6 +14,9 @@ const LISTEN_MAX_H  = 26
 const SPEAK_MAX_H   = 44
 const LISTEN_PERIOD = 1200
 
+// Flip to true once a real Clive voice sample exists at public/audio/clive-sample.mp3
+const HAS_CLIVE_SAMPLE = false
+
 const CALLOUTS = [
   "Box this lap — fuel's two short.",
   "Car behind into Turn 3 — defend the inside.",
@@ -163,11 +166,6 @@ export function CliveIndicator() {
   const labelColor =
     phase === "idle" ? "rgba(244,244,242,0.35)" : "#FF4D00"
 
-  function handlePlayAudio() {
-    const audio = new Audio("/audio/clive-sample.mp3")
-    audio.play().catch(() => {})
-  }
-
   const text    = CALLOUTS[calloutIndex]
   const visible = text.slice(0, revealedChars)
   const typing  = !reducedMotion && revealedChars < text.length
@@ -275,14 +273,16 @@ export function CliveIndicator() {
         </span>
       </div>
 
-      {/* Hear Clive — user-initiated audio only */}
-      <button
-        onClick={handlePlayAudio}
-        aria-label="Play a sample of Clive speaking"
-        className="mt-1 font-mono text-[11px] tracking-wider text-muted-foreground/50 transition-colors hover:text-primary"
-      >
-        ▶ HEAR CLIVE
-      </button>
+      {/* Hear Clive — user-initiated audio only; gated until sample exists */}
+      {HAS_CLIVE_SAMPLE && (
+        <button
+          onClick={() => { new Audio("/audio/clive-sample.mp3").play().catch(() => {}) }}
+          aria-label="Play a sample of Clive speaking"
+          className="mt-1 font-mono text-[11px] tracking-wider text-muted-foreground/50 transition-colors hover:text-primary"
+        >
+          ▶ HEAR CLIVE
+        </button>
+      )}
     </div>
   )
 }
