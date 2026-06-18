@@ -36,12 +36,10 @@ export function AiEngineer() {
 
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-    if (mq.matches) {
-      setReducedMotion(true)
-      if (videoRef.current) {
-        videoRef.current.pause()
-        videoRef.current.currentTime = 0
-      }
+    const reduce = mq.matches
+    setReducedMotion(reduce)
+    if (!reduce) {
+      videoRef.current?.play().catch(() => {})
     }
   }, [])
 
@@ -90,7 +88,6 @@ export function AiEngineer() {
               <video
                 ref={videoRef}
                 src="/video/racecortex-teaser.mp4"
-                autoPlay={!reducedMotion}
                 muted
                 loop={!reducedMotion}
                 playsInline
