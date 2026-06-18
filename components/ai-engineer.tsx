@@ -1,7 +1,6 @@
 "use client"
 
-import Image from "next/image"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Brain, Mic, Sparkles } from "lucide-react"
 
 const chatMessages = [
@@ -32,6 +31,19 @@ const capabilities = [
 
 export function AiEngineer() {
   const [visibleMessages, setVisibleMessages] = useState(0)
+  const [reducedMotion, setReducedMotion] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
+    if (mq.matches) {
+      setReducedMotion(true)
+      if (videoRef.current) {
+        videoRef.current.pause()
+        videoRef.current.currentTime = 0
+      }
+    }
+  }, [])
 
   useEffect(() => {
     if (visibleMessages >= chatMessages.length) return
@@ -75,11 +87,16 @@ export function AiEngineer() {
           {/* Left - Dramatic image */}
           <div className="relative overflow-hidden rounded-sm border border-border lg:rounded-r-none">
             <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[520px]">
-              <Image
-                src="/images/ai-engineer.jpg"
-                alt="AI race engineer analyzing telemetry data in a dark pit garage"
-                fill
-                className="object-cover"
+              <video
+                ref={videoRef}
+                src="/video/racecortex-teaser.mp4"
+                autoPlay={!reducedMotion}
+                muted
+                loop={!reducedMotion}
+                playsInline
+                preload="metadata"
+                aria-label="RaceCortex brand teaser"
+                className="absolute inset-0 h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent" />
               <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
