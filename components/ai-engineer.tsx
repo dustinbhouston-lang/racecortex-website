@@ -5,43 +5,23 @@ import { useEffect, useState } from "react"
 import { Brain, Mic, Sparkles } from "lucide-react"
 
 const chatMessages = [
-  {
-    role: "engineer" as const,
-    text: "Braking 12m too late into T3. You're losing 0.18s every lap there. Try braking at the 75m board.",
-    delay: 0,
-  },
-  {
-    role: "driver" as const,
-    text: "Adjusted braking point. How's the entry now?",
-    delay: 1200,
-  },
-  {
-    role: "engineer" as const,
-    text: "Better. Entry speed up 4km/h. You're now carrying more speed through the apex. Mid-corner balance looks good on the data.",
-    delay: 2400,
-  },
-  {
-    role: "driver" as const,
-    text: "Still feel a snap on exit. Rear feels loose.",
-    delay: 3800,
-  },
-  {
-    role: "engineer" as const,
-    text: "Confirmed. Rear slip angle peaks at 7.2 on exit. I recommend +1 rear wing and softening the rear ARB to medium. Predicted gain: 0.09s/lap.",
-    delay: 5000,
-  },
+  { role: "engineer" as const, text: "Fuel's two short to the flag at this pace. Lift-and-coast out of sector 3 and I'll re-run it.", delay: 0 },
+  { role: "driver" as const,   text: "Copy. What's the gap to P3?", delay: 1200 },
+  { role: "engineer" as const, text: "1.4 and closing — you're three tenths a lap quicker. He pits in two; stay out and track position is yours.", delay: 2400 },
+  { role: "driver" as const,   text: "Can I make the end on this set?", delay: 3800 },
+  { role: "engineer" as const, text: "On the lift-and-coast, yes — you'll cross the line with half a litre. Tyre deg's flat over the last five laps, you're good.", delay: 5000 },
 ]
 
 const capabilities = [
   {
     icon: Mic,
-    title: "Real-Time Voice Coaching",
-    description: "Get spoken callouts through corners, braking cues, and strategic updates just like a real pit wall.",
+    title: "Real-Time Race Comms",
+    description: "Ask a question, or get spoken updates on gaps, fuel, traffic, and strategy — just like a real pit wall.",
   },
   {
     icon: Brain,
-    title: "Learns Your Driving Style",
-    description: "The AI adapts to your strengths and weaknesses over time, giving progressively smarter feedback each session.",
+    title: "Knows How You Race",
+    description: "Clive builds a profile of your tendencies and adapts how it calls the race to you — not a one-size-fits-all robot.",
   },
   {
     icon: Sparkles,
@@ -80,14 +60,13 @@ export function AiEngineer() {
           </span>
           <h2 className="mt-6 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-6xl">
             <span className="text-balance">
-              AN ENGINEER THAT
+              NOT A COACH —
               <br />
-              <span className="text-primary">NEVER SLEEPS</span>
+              <span className="text-primary">YOUR RACE ENGINEER.</span>
             </span>
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-            Most sim racers train alone. RaceCortex gives you an AI race engineer that analyzes every input, 
-            coaches you through every corner, and gets smarter the more you drive.
+            RaceCortex isn&apos;t another AI driving coach — we&apos;ll leave the lap-by-lap tuition to the instructors. Clive is your race engineer: he feeds you the right information the moment you need it, answers when you ask, runs your fuel and tyre strategy, and reads the race in real time. No overlays to scan, no hotkeys to hunt for mid-corner — just talk to him and keep your eyes on the track.
           </p>
         </div>
 
@@ -109,7 +88,7 @@ export function AiEngineer() {
                     <Brain size={20} className="text-primary-foreground" />
                   </div>
                   <div>
-                    <span className="font-mono text-sm font-bold text-foreground">Cortex AI</span>
+                    <span className="font-mono text-sm font-bold text-foreground">Clive</span>
                     <p className="text-xs text-muted-foreground">Your personal race engineer</p>
                   </div>
                 </div>
@@ -147,7 +126,7 @@ export function AiEngineer() {
                     <span className={`block text-[11px] font-mono font-semibold uppercase tracking-wider mb-1.5 ${
                       msg.role === "engineer" ? "text-primary" : "text-muted-foreground"
                     }`}>
-                      {msg.role === "engineer" ? "Cortex AI" : "You"}
+                      {msg.role === "engineer" ? "Clive" : "You"}
                     </span>
                     <p className="text-sm leading-relaxed text-foreground">
                       {msg.text}

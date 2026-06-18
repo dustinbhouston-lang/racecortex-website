@@ -35,8 +35,7 @@ export function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg lg:mt-8 lg:text-xl">
-          An AI engineer that rides shotgun every session. It reads your telemetry, coaches you
-          through corners in real time, and builds race strategies so you can focus on driving.
+          An AI engineer that rides shotgun every session — it reads your telemetry, runs your race strategy, and answers when you ask, so you can keep your eyes on the track.
         </p>
 
         <div className="mt-10 lg:mt-12">
@@ -64,7 +63,7 @@ export function Hero() {
           {[
             { value: "120+", label: "Telemetry channels" },
             { value: "60Hz", label: "Live sampling" },
-            { value: "Real-time", label: "AI voice coaching" },
+            { value: "Real-time", label: "Live race comms" },
           ].map((stat) => (
             <div key={stat.label} className="flex flex-col items-center">
               <span className="font-mono text-2xl font-bold text-primary sm:text-3xl lg:text-4xl">

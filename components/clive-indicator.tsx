@@ -173,7 +173,7 @@ export function CliveIndicator() {
   return (
     <div className="flex flex-col items-center gap-3">
       {/* Screen-reader label for the whole block */}
-      <span className="sr-only">Clive AI race engineer — real-time voice coaching demo</span>
+      <span className="sr-only">Clive AI race engineer — real-time voice comms demo</span>
 
       {/* Animated pill — decorative, hidden from AT */}
       <div

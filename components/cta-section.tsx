@@ -13,7 +13,7 @@ export function CtaSection() {
             </span>
           </h2>
           <p className="mt-4 max-w-lg text-base leading-relaxed text-muted-foreground lg:text-lg">
-            Stop guessing where time goes. Let an AI race engineer analyze every corner, coach every session, and build you into a faster driver.
+            Stop scanning overlays mid-corner. Let an AI race engineer read the data, call your strategy, and hand you the insight to race smarter.
           </p>
           <a
             href="#pricing"

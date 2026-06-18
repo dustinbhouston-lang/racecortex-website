@@ -29,7 +29,7 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'RaceCortex - Sim Racing Intelligence',
-  description: 'Real-time telemetry, AI-powered race analysis, and performance coaching for sim racers who demand more.',
+  description: 'Real-time telemetry, race strategy, and an AI race engineer that calls the race with you — for sim racers who demand more.',
   icons: {
     icon: [
       {

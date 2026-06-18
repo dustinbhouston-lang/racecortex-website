@@ -46,7 +46,7 @@ export function Features() {
             <span className="text-balance">Built around your AI engineer</span>
           </h2>
           <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-            The AI race engineer is the brain. These are the tools it uses to make you faster.
+            The AI race engineer is the brain — it turns raw telemetry into race insight no overlay can give you. These are the tools it reads.
           </p>
         </div>
 

@@ -11,19 +11,19 @@ const steps = [
     number: "02",
     title: "DRIVE",
     description:
-      "Your AI engineer rides shotgun from the first lap. It watches every input, every corner, every braking zone in real time.",
+      "Your AI engineer rides shotgun from the first lap — reading every input, lap, and stint in real time: fuel, pace, tyres, traffic.",
   },
   {
     number: "03",
-    title: "GET COACHED",
+    title: "GET THE CALL",
     description:
-      "Mid-session, the AI calls out braking cues, suggests lines, and flags setup imbalances (with fixes for supported cars). Like a real race engineer in your ear.",
+      "Mid-race, your engineer calls fuel and pit strategy, gaps and traffic, flags and incidents — the information a real pit wall would give you, the moment it matters.",
   },
   {
     number: "04",
     title: "EVOLVE",
     description:
-      "After each session the AI builds your driver profile. It learns your tendencies, adapts its coaching, and sets new performance targets automatically.",
+      "After each session the AI sharpens your driver profile — learning your tendencies and how you like to be called, so the comms get more personal every time out.",
   },
 ]
 
@@ -37,7 +37,7 @@ export function HowItWorks() {
             <div className="relative aspect-square lg:aspect-auto lg:h-full">
               <Image
                 src="/images/track-analysis.jpg"
-                alt="Racing track analysis with optimal racing line overlay"
+                alt="RaceCortex telemetry and race analysis"
                 fill
                 className="object-cover"
               />
