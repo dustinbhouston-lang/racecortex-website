@@ -1,5 +1,6 @@
 import Image from "next/image"
 import { ArrowRight } from "lucide-react"
+import { CliveIndicator } from "@/components/clive-indicator"
 
 export function Hero() {
   return (
@@ -34,11 +35,15 @@ export function Hero() {
         </h1>
 
         <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg lg:mt-8 lg:text-xl">
-          An AI engineer that rides shotgun every session. It reads your telemetry, coaches you 
+          An AI engineer that rides shotgun every session. It reads your telemetry, coaches you
           through corners in real time, and builds race strategies so you can focus on driving.
         </p>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4 lg:mt-10">
+        <div className="mt-10 lg:mt-12">
+          <CliveIndicator />
+        </div>
+
+        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
           <a
             href="#pricing"
             className="inline-flex h-12 items-center justify-center gap-2 rounded-sm bg-primary px-6 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90 sm:h-14 sm:px-8"
