@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { Brain, Mic, Sparkles } from "lucide-react"
+import { Brain, Mic, Radio, Sparkles, Volume2 } from "lucide-react"
 
 const chatMessages = [
   { role: "engineer" as const, text: "Fuel's two short to the flag at this pace. Lift-and-coast out of sector 3 and I'll re-run it.", delay: 0 },
@@ -32,8 +32,11 @@ const capabilities = [
 export function AiEngineer() {
   const [visibleMessages, setVisibleMessages] = useState(0)
   const [reducedMotion, setReducedMotion] = useState(false)
+  const [inView, setInView] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const panelRef = useRef<HTMLDivElement>(null)
 
+  // Detect reduced-motion after mount (avoids hydration mismatch)
   useEffect(() => {
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
     const reduce = mq.matches
@@ -43,19 +46,41 @@ export function AiEngineer() {
     }
   }, [])
 
+  // Scroll-triggered reveal — fires once when panel first enters viewport
   useEffect(() => {
+    const el = panelRef.current
+    if (!el) return
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setInView(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.1 }
+    )
+    observer.observe(el)
+    return () => observer.disconnect()
+  }, [])
+
+  // Message reveal — gated on inView; reduced-motion shows all immediately
+  useEffect(() => {
+    if (!inView) return
+    if (reducedMotion) {
+      setVisibleMessages(chatMessages.length)
+      return
+    }
     if (visibleMessages >= chatMessages.length) return
 
-    const nextDelay = chatMessages[visibleMessages]
-      ? chatMessages[visibleMessages].delay - (visibleMessages > 0 ? chatMessages[visibleMessages - 1].delay : 0)
-      : 1200
+    const prevDelay = visibleMessages > 0 ? chatMessages[visibleMessages - 1].delay : 0
+    const nextDelay = chatMessages[visibleMessages].delay - prevDelay
 
     const timeout = setTimeout(() => {
       setVisibleMessages((v) => v + 1)
     }, visibleMessages === 0 ? 800 : nextDelay)
 
     return () => clearTimeout(timeout)
-  }, [visibleMessages])
+  }, [inView, visibleMessages, reducedMotion])
 
   return (
     <section id="ai-engineer" className="relative px-5 py-20 lg:px-8 lg:py-32">
@@ -80,19 +105,19 @@ export function AiEngineer() {
           </p>
         </div>
 
-        {/* Main showcase: image + chat UI */}
+        {/* Main showcase: video + comms log */}
         <div className="mt-12 grid gap-6 lg:mt-16 lg:grid-cols-2 lg:gap-0">
-          {/* Left - Dramatic image */}
+          {/* Left - Abstract loop video */}
           <div className="relative overflow-hidden rounded-sm border border-border lg:rounded-r-none">
             <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[520px]">
               <video
                 ref={videoRef}
-                src="/video/racecortex-teaser.mp4"
+                src="/video/ai-engineer-loop.mp4"
                 muted
                 loop={!reducedMotion}
                 playsInline
                 preload="metadata"
-                aria-label="RaceCortex brand teaser"
+                aria-label="Abstract motion graphic"
                 className="absolute inset-0 h-full w-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent" />
@@ -110,48 +135,68 @@ export function AiEngineer() {
             </div>
           </div>
 
-          {/* Right - Simulated chat interface */}
-          <div className="flex flex-col overflow-hidden rounded-sm border border-border bg-card lg:rounded-l-none lg:border-l-0">
-            {/* Chat header */}
+          {/* Right - Team radio comms log */}
+          <div ref={panelRef} className="flex flex-col overflow-hidden rounded-sm border border-border bg-card lg:rounded-l-none lg:border-l-0">
+            {/* Radio header */}
             <div className="flex items-center justify-between border-b border-border px-5 py-4">
               <div className="flex items-center gap-2.5">
-                <div className="h-2.5 w-2.5 rounded-full bg-primary animate-pulse" />
+                <Radio size={13} className="text-primary" />
                 <span className="font-mono text-xs font-semibold uppercase tracking-wider text-primary">
-                  Live Session - Spa-Francorchamps
+                  Team Radio
                 </span>
+                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
               </div>
-              <span className="font-mono text-xs text-muted-foreground">Lap 14</span>
+              <div className="flex items-center gap-2">
+                <div className="flex items-end gap-[2px]">
+                  {[4, 6, 9, 7, 5].map((h, i) => (
+                    <div key={i} className="w-1 rounded-sm bg-primary/50" style={{ height: `${h}px` }} />
+                  ))}
+                </div>
+                <span className="font-mono text-[11px] text-muted-foreground">SPA · LAP 14</span>
+              </div>
             </div>
 
-            {/* Chat messages */}
-            <div className="flex flex-1 flex-col gap-3 overflow-y-auto p-5">
-              {chatMessages.slice(0, visibleMessages).map((msg, i) => (
-                <div
-                  key={i}
-                  className={`flex ${msg.role === "driver" ? "justify-end" : "justify-start"} animate-in fade-in slide-in-from-bottom-2 duration-300`}
-                >
+            {/* Comms log */}
+            <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-5">
+              {chatMessages.slice(0, visibleMessages).map((msg, i) =>
+                msg.role === "engineer" ? (
                   <div
-                    className={`max-w-[85%] rounded-sm px-4 py-3 ${
-                      msg.role === "engineer"
-                        ? "border border-primary/20 bg-primary/5"
-                        : "bg-secondary"
-                    }`}
+                    key={i}
+                    className="flex flex-col gap-1.5 rounded-sm border border-primary/15 bg-primary/5 px-4 py-3 animate-in fade-in slide-in-from-bottom-2 duration-300"
                   >
-                    <span className={`block text-[11px] font-mono font-semibold uppercase tracking-wider mb-1.5 ${
-                      msg.role === "engineer" ? "text-primary" : "text-muted-foreground"
-                    }`}>
-                      {msg.role === "engineer" ? "Clive" : "You"}
-                    </span>
-                    <p className="text-sm leading-relaxed text-foreground">
+                    <div className="flex items-center gap-1.5">
+                      <Volume2 size={11} className="text-primary" />
+                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary">
+                        Clive
+                      </span>
+                    </div>
+                    <p className="font-mono text-sm leading-relaxed text-foreground">
                       {msg.text}
                     </p>
                   </div>
-                </div>
-              ))}
+                ) : (
+                  <div
+                    key={i}
+                    className="flex flex-col gap-1.5 px-4 py-3 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                  >
+                    <div className="flex items-center gap-1.5">
+                      <Mic size={11} className="text-muted-foreground/50" />
+                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50">
+                        You
+                      </span>
+                    </div>
+                    <p className="font-mono text-sm leading-relaxed text-foreground/75">
+                      {msg.text}
+                    </p>
+                  </div>
+                )
+              )}
 
-              {visibleMessages < chatMessages.length && (
-                <div className="flex justify-start">
-                  <div className="flex items-center gap-1.5 rounded-sm border border-primary/20 bg-primary/5 px-4 py-3">
+              {inView && visibleMessages < chatMessages.length && (
+                <div className="flex items-center gap-2 rounded-sm border border-primary/15 bg-primary/5 px-4 py-3">
+                  <Volume2 size={11} className="text-primary" />
+                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary">Clive</span>
+                  <div className="ml-1 flex items-center gap-1">
                     <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
                     <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" style={{ animationDelay: "0.2s" }} />
                     <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" style={{ animationDelay: "0.4s" }} />
@@ -160,11 +205,24 @@ export function AiEngineer() {
               )}
             </div>
 
-            {/* Input bar */}
+            {/* Push-to-talk bar */}
             <div className="border-t border-border px-5 py-4">
-              <div className="flex items-center gap-3 rounded-sm border border-border bg-secondary/50 px-4 py-3">
-                <span className="flex-1 text-sm text-muted-foreground">Ask your engineer...</span>
-                <Mic size={16} className="text-muted-foreground" />
+              <div className="flex items-center gap-4">
+                <div className="flex items-end gap-[2px] opacity-20">
+                  {[4, 7, 10, 8, 13, 6, 9, 11, 7, 4].map((h, i) => (
+                    <div key={i} className="w-[3px] rounded-full bg-foreground" style={{ height: `${h}px` }} />
+                  ))}
+                </div>
+                <button
+                  disabled
+                  aria-label="Push to talk — voice comms are live in the app"
+                  className="flex h-10 w-10 shrink-0 cursor-default items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-primary"
+                >
+                  <Mic size={16} />
+                </button>
+                <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground/40">
+                  Hold to Talk
+                </span>
               </div>
             </div>
           </div>

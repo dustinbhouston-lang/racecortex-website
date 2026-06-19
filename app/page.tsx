@@ -14,8 +14,8 @@ export default function Page() {
     <main className="min-h-screen bg-background text-foreground">
       <Navbar />
       <Hero />
-      <AiEngineer />
       <Features />
+      <AiEngineer />
       <HowItWorks />
       <TelemetryPreview />
       <Pricing />
