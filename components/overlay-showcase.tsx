@@ -155,12 +155,33 @@ const ROWS = [
   { pos: 11, num: "44", driver: "G. Aubry",        base: 68.774, isPlayer: false, inPit: true  },
 ]
 
+// Fuel cycles over FUEL_PERIOD ticks (12.4 → 8.5 L, then wraps) — never decays to zero.
+const FUEL_PERIOD = 800
+const FUEL_HI = 12.4
+const FUEL_LO = 8.5
+const FUEL_TARGET_LAPS = 4.1  // laps remaining to finish (fixed reference for "To finish")
+const PER_LAP = 2.81
+
+// ── StandingsWidget at module scope — stable component type, gaps passed as prop ─
+function StandingsWidget({ gaps, width }: { gaps: string[]; width?: number | string }) {
+  return (
+    <Widget title="Standings" context="LAP 23/45" width={width}>
+      {ROWS.map((r, i) => (
+        <SRow key={r.pos} pos={r.pos} num={r.num} driver={r.driver}
+          gap={gaps[i]} tone="neutral" isPlayer={r.isPlayer} inPit={r.inPit} />
+      ))}
+    </Widget>
+  )
+}
+
 // ── Main component ─────────────────────────────────────────────────────────────
 export function OverlayShowcase() {
-  const containerRef = useRef<HTMLDivElement>(null)
-  const [scale, setScale] = useState(1)
-  const [tick, setTick] = useState(0)
-  const [rm, setRm] = useState(false)
+  const wrapperRef   = useRef<HTMLDivElement>(null)  // IO visibility target
+  const containerRef = useRef<HTMLDivElement>(null)  // ResizeObserver for scale
+  const [scale, setScale]           = useState(1)
+  const [tick, setTick]             = useState(0)
+  const [rm, setRm]                 = useState(false)
+  const [isVisible, setIsVisible]   = useState(false)
   const [cliveState, setCliveState] = useState<"idle" | "listening" | "speaking">("idle")
   const [cliveMsgIdx, setCliveMsgIdx] = useState(0)
 
@@ -173,7 +194,19 @@ export function OverlayShowcase() {
     return () => mq.removeEventListener("change", h)
   }, [])
 
-  // ResizeObserver → scale
+  // IntersectionObserver — start/stop animations based on viewport visibility
+  useEffect(() => {
+    const el = wrapperRef.current
+    if (!el) return
+    const io = new IntersectionObserver(
+      ([entry]) => setIsVisible(entry.isIntersecting),
+      { threshold: 0 }
+    )
+    io.observe(el)
+    return () => io.disconnect()
+  }, [])
+
+  // ResizeObserver → scale (desktop canvas only)
   useEffect(() => {
     const el = containerRef.current
     if (!el) return
@@ -182,16 +215,18 @@ export function OverlayShowcase() {
     return () => ro.disconnect()
   }, [])
 
-  // Telemetry tick — stopped under reduced-motion
+  // Telemetry tick — runs only while visible and not reduced-motion
   useEffect(() => {
-    if (rm) return
+    if (rm || !isVisible) return
     const id = setInterval(() => setTick(t => t + 1), 160)
     return () => clearInterval(id)
-  }, [rm])
+  }, [rm, isVisible])
 
-  // Clive phase cycle
+  // Clive phase cycle — gated on visibility; resets to idle on leave
   useEffect(() => {
     if (rm) { setCliveState("speaking"); setCliveMsgIdx(0); return }
+    if (!isVisible) { setCliveState("idle"); return }
+
     let alive = true, idx = 0
     let t: ReturnType<typeof setTimeout>
     function cycle() {
@@ -209,7 +244,7 @@ export function OverlayShowcase() {
     }
     cycle()
     return () => { alive = false; clearTimeout(t) }
-  }, [rm])
+  }, [rm, isVisible])
 
   // ── Derived telemetry ────────────────────────────────────────────────────────
   const deltaVal   = parseFloat((-0.05 + 0.5 * Math.sin(tick * 0.10)).toFixed(3))
@@ -219,9 +254,11 @@ export function OverlayShowcase() {
   const curLap     = fmtLap(91.793 + deltaVal * 0.6)
   const lastLap    = fmtLap(92.135 + Math.sin(tick * 0.03) * 0.05)
 
-  const fuelRem  = Math.max(0, 12.4 - tick * 0.007)
-  const lapsLeft = fuelRem / 2.81
-  const toFinish = 4.2 * 2.81 - fuelRem + Math.sin(tick * 0.05) * 0.3
+  // Fuel: cyclic sawtooth — 12.4 → 8.5 L over FUEL_PERIOD ticks, then wraps
+  const fuelPhase = (tick % FUEL_PERIOD) / FUEL_PERIOD
+  const fuelRem   = FUEL_HI - (FUEL_HI - FUEL_LO) * fuelPhase + Math.sin(tick * 0.04) * 0.12
+  const lapsLeft  = fuelRem / PER_LAP
+  const toFinish  = FUEL_TARGET_LAPS * PER_LAP - fuelRem  // positive = short (needs pit)
   const pitWindow = toFinish > 0
 
   const thrPct = Math.round(55 + 35 * ((Math.sin(tick * 0.28) + 1) / 2))
@@ -230,30 +267,18 @@ export function OverlayShowcase() {
   const relBefore = (+ (-2.4 + Math.sin(tick * 0.07) * 0.4)).toFixed(1)
   const relAfter  = (+ (1.8  + Math.sin(tick * 0.11 + 1.2) * 0.5)).toFixed(1)
 
-  function rowGap(r: typeof ROWS[number], i: number) {
+  const rowGaps = ROWS.map((r, i) => {
     if (r.base < 0) return "LEADER"
     if (r.isPlayer) return "+" + r.base.toFixed(3)
     return "+" + (r.base + Math.sin(tick * 0.04 + i * 1.1) * 0.25).toFixed(3)
-  }
-
-  // ── Shared widget tree ────────────────────────────────────────────────────────
-  function StandingsWidget({ width }: { width?: number | string }) {
-    return (
-      <Widget title="Standings" context="LAP 23/45" width={width}>
-        {ROWS.map((r, i) => (
-          <SRow key={r.pos} pos={r.pos} num={r.num} driver={r.driver}
-            gap={rowGap(r, i)} tone="neutral" isPlayer={r.isPlayer} inPit={r.inPit} />
-        ))}
-      </Widget>
-    )
-  }
+  })
 
   // ── Full 1280×720 scene (desktop) ─────────────────────────────────────────────
   const scene = (
     <>
       {/* Standings — top left */}
       <div style={{ position: "absolute", left: 40, top: 40 }}>
-        <StandingsWidget width={300} />
+        <StandingsWidget gaps={rowGaps} width={300} />
       </div>
 
       {/* Delta — top right */}
@@ -288,9 +313,9 @@ export function OverlayShowcase() {
         <Widget title="Fuel" context={pitWindow ? "PIT WINDOW" : undefined} contextTone={pitWindow ? "accent" : "smoke"} width={200}>
           <div style={{ padding: "6px 0" }}>
             {([
-              ["Remaining", `${fuelRem.toFixed(1)} L`,                                           "chalk"],
-              ["Per lap",   "2.81 L",                                                             "chalk"],
-              ["Laps left", lapsLeft.toFixed(1),                                                  "caution"],
+              ["Remaining", `${fuelRem.toFixed(1)} L`,                                             "chalk"],
+              ["Per lap",   `${PER_LAP} L`,                                                        "chalk"],
+              ["Laps left", lapsLeft.toFixed(1),                                                   "caution"],
               ["To finish", (toFinish > 0 ? "+" : "") + toFinish.toFixed(1) + " L", toFinish > 0 ? "loss" : "gain"],
             ] as [string, string, string][]).map(([l, v, t]) => {
               const c = ({ chalk: "var(--rc-chalk)", caution: "var(--rc-tel-caution)", loss: "var(--rc-tel-loss)", gain: "var(--rc-tel-gain)" } as Record<string, string>)[t] ?? "var(--rc-chalk)"
@@ -308,9 +333,9 @@ export function OverlayShowcase() {
       {/* Relative — bottom left */}
       <div style={{ position: "absolute", left: 40, bottom: 120 }}>
         <Widget title="Relative" context="P9" width={272}>
-          <SRow pos="P8"  num="37" driver="W. Stevens" gap={relBefore}       tone="gain" />
-          <SRow pos="P9"  num="64" driver="YOU"        gap="0.0"             isPlayer />
-          <SRow pos="P10" num="22" driver="P. Hanson"  gap={`+${relAfter}`} tone="loss" />
+          <SRow pos="P8"  num="37" driver="W. Stevens" gap={relBefore}        tone="gain" />
+          <SRow pos="P9"  num="64" driver="YOU"        gap="0.0"              isPlayer />
+          <SRow pos="P10" num="22" driver="P. Hanson"  gap={`+${relAfter}`}  tone="loss" />
         </Widget>
       </div>
 
@@ -338,7 +363,7 @@ export function OverlayShowcase() {
   )
 
   return (
-    <div className="rc-showcase">
+    <div ref={wrapperRef} className="rc-showcase">
       {/* eslint-disable-next-line react/no-danger */}
       <style dangerouslySetInnerHTML={{ __html: OVERLAY_CSS }} />
 
@@ -373,7 +398,7 @@ export function OverlayShowcase() {
         className="flex flex-col gap-3 overflow-hidden rounded-sm border border-border p-4 md:hidden"
         style={{ background: "#070709" }}
       >
-        <StandingsWidget />
+        <StandingsWidget gaps={rowGaps} />
         <CliveChip state={cliveState} message={cliveState === "speaking" ? CLIVE_MSGS[cliveMsgIdx] : undefined} width="100%" />
       </div>
     </div>
