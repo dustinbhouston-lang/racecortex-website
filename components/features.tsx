@@ -1,5 +1,5 @@
-import Image from "next/image"
 import { Activity, Gauge, Layers, Radio, Zap } from "lucide-react"
+import { OverlayShowcase } from "@/components/overlay-showcase"
 
 const features = [
   {
@@ -69,25 +69,8 @@ export function Features() {
           ))}
         </div>
 
-        {/* Large visual break */}
-        <div className="mt-16 overflow-hidden rounded-sm border border-border lg:mt-24">
-          <div className="relative aspect-[16/9] sm:aspect-[21/9]">
-            <Image
-              src="/images/telemetry-dashboard.jpg"
-              alt="RaceCortex telemetry dashboard showing real-time racing data"
-              fill
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-10">
-              <span className="font-mono text-sm font-semibold uppercase tracking-widest text-primary">
-                Telemetry Dashboard
-              </span>
-              <h3 className="mt-2 font-display text-xl font-bold text-foreground sm:text-2xl lg:text-3xl">
-                Every data point. One clear picture.
-              </h3>
-            </div>
-          </div>
+        <div className="mt-16 lg:mt-24">
+          <OverlayShowcase />
         </div>
       </div>
     </section>
