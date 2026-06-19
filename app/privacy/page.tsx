@@ -312,6 +312,18 @@ export default function PrivacyPage() {
         the Service, you understand that your data may be transferred to and processed
         in the United States.
       </p>
+
+      <h2>10. Changes to this policy</h2>
+      <p>
+        We'll post changes here and update the "last updated" date; significant
+        changes will be communicated to beta users by email.
+      </p>
+
+      <h2>11. Contact</h2>
+      <p>
+        Questions or requests: <strong>privacy@racecortex.com</strong>, RaceCortex
+        LLC, Arkansas, USA.
+      </p>
     </LegalPageWrapper>
   )
 }
