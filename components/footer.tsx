@@ -1,6 +1,7 @@
 import Image from "next/image"
+import Link from "next/link"
 
-type FooterLink = { label: string; soon?: boolean }
+type FooterLink = { label: string; href?: string; soon?: boolean }
 
 const footerLinks: Record<string, FooterLink[]> = {
   Product: [
@@ -9,6 +10,7 @@ const footerLinks: Record<string, FooterLink[]> = {
     { label: "Telemetry" },
     { label: "Setup Lab" },
     { label: "Changelog" },
+    { label: "Quick Start", href: "/start" },
   ],
   Simulators: [
     { label: "iRacing" },
@@ -24,9 +26,9 @@ const footerLinks: Record<string, FooterLink[]> = {
     { label: "Contact" },
   ],
   Legal: [
-    { label: "Privacy" },
-    { label: "Terms" },
-    { label: "Cookie Policy" },
+    { label: "Privacy", href: "/privacy" },
+    { label: "Terms", href: "/terms" },
+    { label: "Cookie Policy", href: "/privacy" },
   ],
 }
 
@@ -67,6 +69,13 @@ export function Footer() {
                           Soon
                         </span>
                       </span>
+                    ) : link.href ? (
+                      <Link
+                        href={link.href}
+                        className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                      >
+                        {link.label}
+                      </Link>
                     ) : (
                       <a
                         href="#"

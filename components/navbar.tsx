@@ -7,10 +7,10 @@ import { Menu, X } from "lucide-react"
 import { NavbarUser } from "@/components/navbar-user"
 
 const navLinks = [
-  { label: "AI Engineer", href: "#ai-engineer" },
-  { label: "Platform", href: "#features" },
-  { label: "How It Works", href: "#how-it-works" },
-  { label: "Pricing", href: "#pricing" },
+  { label: "AI Engineer", href: "/#ai-engineer" },
+  { label: "Platform", href: "/#features" },
+  { label: "How It Works", href: "/#how-it-works" },
+  { label: "Pricing", href: "/#pricing" },
 ]
 
 export function Navbar() {
@@ -19,7 +19,7 @@ export function Navbar() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/50 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
-        <a href="#" className="flex items-center">
+        <Link href="/" className="flex items-center">
           <Image
             src="/brand/racecortex-logo-horizontal-white.png"
             alt="RaceCortex"
@@ -28,7 +28,7 @@ export function Navbar() {
             className="h-8 w-auto object-contain"
             priority
           />
-        </a>
+        </Link>
 
         <div className="hidden items-center gap-8 md:flex">
           {navLinks.map((link) => (
@@ -46,7 +46,7 @@ export function Navbar() {
           {/* Desktop: full auth-aware dropdown (signed in = email + menu; signed out = Log in link) */}
           <NavbarUser />
           <a
-            href="#pricing"
+            href="/#pricing"
             className="inline-flex h-10 items-center rounded-sm bg-primary px-5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
           >
             Get Early Access
@@ -85,7 +85,7 @@ export function Navbar() {
                 Log in
               </Link>
               <a
-                href="#pricing"
+                href="/#pricing"
                 className="inline-flex h-12 items-center justify-center rounded-sm bg-primary px-5 text-base font-semibold text-primary-foreground"
               >
                 Get Early Access
