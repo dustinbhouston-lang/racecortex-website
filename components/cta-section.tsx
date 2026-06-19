@@ -1,9 +1,22 @@
+import Image from "next/image"
 import { ArrowRight } from "lucide-react"
 
 export function CtaSection() {
   return (
-    <section className="relative px-5 py-20 lg:px-8 lg:py-32">
-      <div className="mx-auto max-w-4xl">
+    <section className="relative overflow-hidden px-5 py-20 lg:px-8 lg:py-32">
+      {/* Background */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/images/cta-orange-trails.webp"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover opacity-30"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/50 to-background/70" />
+      </div>
+
+      <div className="relative z-10 mx-auto max-w-4xl">
         <div className="flex flex-col items-center rounded-sm border border-primary/20 bg-primary/5 px-6 py-16 text-center lg:px-12 lg:py-24">
           <h2 className="font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
             <span className="text-balance">

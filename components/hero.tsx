@@ -8,9 +8,10 @@ export function Hero() {
       {/* Background image */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/hero-car.jpg"
+          src="/images/hero-carbon-streak.webp"
           alt=""
           fill
+          sizes="100vw"
           className="object-cover opacity-40"
           priority
         />
