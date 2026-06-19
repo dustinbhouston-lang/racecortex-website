@@ -162,7 +162,7 @@ export function AiEngineer() {
                 msg.role === "engineer" ? (
                   <div
                     key={i}
-                    className="flex flex-col gap-1.5 rounded-sm border border-primary/15 bg-primary/5 px-4 py-3 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                    className={`flex flex-col gap-1.5 rounded-sm border border-primary/15 bg-primary/5 px-4 py-3${reducedMotion ? "" : " animate-in fade-in slide-in-from-bottom-2 duration-300"}`}
                   >
                     <div className="flex items-center gap-1.5">
                       <Volume2 size={11} className="text-primary" />
@@ -177,7 +177,7 @@ export function AiEngineer() {
                 ) : (
                   <div
                     key={i}
-                    className="flex flex-col gap-1.5 px-4 py-3 animate-in fade-in slide-in-from-bottom-2 duration-300"
+                    className={`flex flex-col gap-1.5 px-4 py-3${reducedMotion ? "" : " animate-in fade-in slide-in-from-bottom-2 duration-300"}`}
                   >
                     <div className="flex items-center gap-1.5">
                       <Mic size={11} className="text-muted-foreground/50" />
@@ -192,7 +192,7 @@ export function AiEngineer() {
                 )
               )}
 
-              {inView && visibleMessages < chatMessages.length && (
+              {!reducedMotion && inView && visibleMessages < chatMessages.length && (
                 <div className="flex items-center gap-2 rounded-sm border border-primary/15 bg-primary/5 px-4 py-3">
                   <Volume2 size={11} className="text-primary" />
                   <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary">Clive</span>
