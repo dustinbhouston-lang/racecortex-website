@@ -1,75 +1,110 @@
-import { Check } from "lucide-react"
-
-const plan = {
-  name: "Early Access",
-  price: "$12",
-  period: "/mo",
-  description: "The full AI race engineer for iRacing.",
-  features: [
-    "AI Race Engineer (Clive) — real-time voice",
-    "Full 120+ channel telemetry",
-    "Unlimited session history",
-    "Lap delta analysis",
-    "Live fuel & stint strategy",
-    "Setup guidance for supported cars",
-    "Priority support",
-  ],
-  cta: "Get Early Access",
-}
+const PLAN_INCLUDES = [
+  'Full voice AI race engineer',
+  '120+ live telemetry channels at 60Hz',
+  'Push-to-talk ask-anything',
+  'Gap, traffic & incident calls',
+  'Fuel & strategy comms',
+  'Full Ignition overlay suite (rolling out during beta)',
+  'Priority support & beta feedback access',
+]
 
 export function Pricing() {
   return (
-    <section id="pricing" className="relative px-5 py-20 lg:px-8 lg:py-32">
-      <div className="mx-auto max-w-7xl">
-        <div className="flex flex-col items-center text-center">
-          <span className="font-mono text-sm font-semibold uppercase tracking-widest text-primary">
+    <section
+      id="pricing"
+      aria-labelledby="pricing-heading"
+      className="relative py-24 lg:py-32 border-t border-[#26262B]"
+    >
+      {/* Faint center ember */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 60% 40% at 50% 100%, rgba(255,77,0,0.06) 0%, transparent 70%)',
+        }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-12 text-center">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-[#FF4D00]">
             Pricing
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-            <span className="text-balance">One plan. The full pit crew.</span>
-          </h2>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted-foreground">
-            Everything RaceCortex does, one price. Free for beta testers while we&apos;re in early access.
           </p>
+          <h2
+            id="pricing-heading"
+            className="font-display font-bold uppercase text-balance"
+            style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
+          >
+            One Plan.{' '}
+            <span className="text-[#8A8C92]">Everything Included.</span>
+          </h2>
         </div>
 
-        <div className="mt-12 mx-auto max-w-md lg:mt-16">
-          <div className="flex flex-col rounded-sm border border-primary bg-primary/5 p-6 lg:p-8">
-            <h3 className="font-display text-lg font-bold text-foreground">
-              {plan.name}
-            </h3>
-            <div className="mt-3 flex items-baseline gap-1">
-              <span className="font-mono text-4xl font-bold text-foreground">
-                {plan.price}
-              </span>
-              <span className="text-base text-muted-foreground">
-                {plan.period}
-              </span>
+        {/* Single centered card */}
+        <div className="mx-auto max-w-sm">
+          <div className="rounded-[8px] border border-[#FF4D00]/40 bg-[rgba(26,26,31,0.92)] overflow-hidden">
+            {/* Card header */}
+            <div className="border-b border-[#26262B] px-6 py-5">
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#FF4D00]">
+                  Beta Access
+                </span>
+                <span className="rounded-[3px] border border-[#FF4D00]/30 bg-[#FF4D00]/10 px-2 py-0.5 font-mono text-[8px] uppercase tracking-[0.15em] text-[#FF4D00]">
+                  Early Beta
+                </span>
+              </div>
+              <h3 className="font-display font-bold uppercase tracking-tight text-[#F4F4F2] text-xl">
+                RaceCortex
+              </h3>
             </div>
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              {plan.description}
-            </p>
 
-            <ul className="mt-6 flex flex-col gap-3">
-              {plan.features.map((feature) => (
-                <li key={feature} className="flex items-start gap-2.5">
-                  <Check
-                    size={16}
-                    className="mt-0.5 shrink-0 text-primary"
-                  />
-                  <span className="text-sm text-muted-foreground">
-                    {feature}
-                  </span>
-                </li>
-              ))}
-            </ul>
+            {/* Price */}
+            <div className="border-b border-[#26262B] px-6 py-6">
+              <div className="flex items-end gap-2">
+                <span className="font-display font-bold text-4xl text-[#F4F4F2]">
+                  Free
+                </span>
+              </div>
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-[#5C5E66]">
+                during the closed beta
+              </p>
+              <p className="mt-3 font-sans text-xs leading-relaxed text-[#5C5E66]">
+                The closed beta is free. Paid plans arrive at launch — beta testers lock in founder
+                pricing. Invite-only: join the waitlist to secure your spot.
+              </p>
+            </div>
 
-            <a
-              href="/download"
-              className="mt-8 inline-flex h-12 items-center justify-center rounded-sm bg-primary text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
-            >
-              {plan.cta}
-            </a>
+            {/* What&apos;s included */}
+            <div className="px-6 py-5">
+              <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5C5E66]">
+                Includes
+              </p>
+              <ul className="flex flex-col gap-3" role="list">
+                {PLAN_INCLUDES.map((item) => (
+                  <li key={item} className="flex items-start gap-3">
+                    <span
+                      className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF4D00]"
+                      aria-hidden="true"
+                    />
+                    <span className="font-sans text-sm leading-snug text-[#8A8C92]">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* CTA */}
+            <div className="px-6 pb-6">
+              <a
+                href="#early-access"
+                className="block rounded-[4px] bg-[#FF4D00] py-3.5 text-center font-display text-sm font-semibold uppercase tracking-[0.1em] text-[#0C0C0E] transition-colors hover:bg-[#CC3E00] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4D00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
+              >
+                Get Early Access
+              </a>
+              <p className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.15em] text-[#5C5E66]">
+                Beta is invite-based — waitlist open now
+              </p>
+            </div>
           </div>
         </div>
       </div>

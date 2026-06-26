@@ -1,83 +1,84 @@
-import Image from "next/image"
-
-const steps = [
+const STEPS = [
   {
-    number: "01",
-    title: "CONNECT",
-    description:
-      "Link RaceCortex to your sim. The AI engineer starts listening to your telemetry stream immediately — zero config, minimal performance impact.",
+    num: '01',
+    title: 'Install & Sign In',
+    body: 'Download the RaceCortex desktop app, sign in with your account, and let it connect to iRacing. No telemetry configuration required.',
   },
   {
-    number: "02",
-    title: "DRIVE",
-    description:
-      "Your AI engineer rides shotgun from the first lap — reading every input, lap, and stint in real time: fuel, pace, tyres, traffic.",
+    num: '02',
+    title: 'Bind Your Push-to-Talk',
+    body: 'Map any key or button to PTT in the settings. Wheel buttons, keyboard keys, or HOTAS — anything you can bind in iRacing works here.',
   },
   {
-    number: "03",
-    title: "GET THE CALL",
-    description:
-      "Mid-race, your engineer calls fuel and pit strategy, gaps and traffic, flags and incidents — the information a real pit wall would give you, the moment it matters.",
-  },
-  {
-    number: "04",
-    title: "EVOLVE",
-    description:
-      "After each session the AI sharpens your driver profile — learning your tendencies and how you like to be called, so the comms get more personal every time out.",
+    num: '03',
+    title: 'Drive. The Engineer Does the Rest.',
+    body: 'Join a session. Your engineer monitors the telemetry feed and calls what matters. Hold push-to-talk to ask anything. Eyes stay on track.',
   },
 ]
 
 export function HowItWorks() {
   return (
-    <section id="how-it-works" className="relative px-5 py-20 lg:px-8 lg:py-32">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-20">
-          {/* Left - Image */}
-          <div className="relative overflow-hidden rounded-sm border border-border">
-            <div className="relative aspect-square lg:aspect-auto lg:h-full">
-              <Image
-                src="/images/track-analysis.jpg"
-                alt="RaceCortex telemetry and race analysis"
-                fill
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
-            </div>
-          </div>
-
-          {/* Right - Steps */}
-          <div className="flex flex-col justify-center">
-            <span className="font-mono text-sm font-semibold uppercase tracking-widest text-primary">
-              How It Works
-            </span>
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
-              <span className="text-balance">From install to insight in minutes</span>
-            </h2>
-
-            <div className="mt-10 flex flex-col gap-8 lg:mt-12">
-              {steps.map((step, i) => (
-                <div key={step.number} className="flex gap-5">
-                  <div className="flex flex-col items-center">
-                    <span className="font-mono text-sm font-bold text-primary">
-                      {step.number}
-                    </span>
-                    {i < steps.length - 1 && (
-                      <div className="mt-2 h-full w-px bg-border" />
-                    )}
-                  </div>
-                  <div className="pb-2">
-                    <h3 className="font-display text-base font-bold tracking-wide text-foreground">
-                      {step.title}
-                    </h3>
-                    <p className="mt-1 text-sm leading-relaxed text-muted-foreground">
-                      {step.description}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+    <section
+      id="how-it-works"
+      aria-labelledby="how-it-works-heading"
+      className="relative py-24 lg:py-32 border-t border-[#26262B]"
+    >
+      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        {/* Header */}
+        <div className="mb-16">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-[#FF4D00]">
+            Quick Start
+          </p>
+          <h2
+            id="how-it-works-heading"
+            className="font-display font-bold uppercase text-balance"
+            style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
+          >
+            Up and Running{' '}
+            <span className="text-[#8A8C92]">in Three Steps.</span>
+          </h2>
         </div>
+
+        {/* Steps */}
+        <ol className="relative grid gap-0 md:grid-cols-3" aria-label="Setup steps">
+          {/* Connector line — desktop only */}
+          <div
+            aria-hidden="true"
+            className="hidden md:block absolute top-[2.25rem] left-[calc(16.67%+1.5rem)] right-[calc(16.67%+1.5rem)] h-px bg-[#26262B]"
+          />
+
+          {STEPS.map((step, i) => (
+            <li
+              key={step.num}
+              className={`relative flex flex-col ${i < STEPS.length - 1 ? 'pb-12 md:pb-0 md:pr-8' : ''}`}
+            >
+              {/* Vertical connector — mobile only */}
+              {i < STEPS.length - 1 && (
+                <div
+                  aria-hidden="true"
+                  className="md:hidden absolute left-[1.375rem] top-[3rem] bottom-0 w-px bg-[#26262B]"
+                />
+              )}
+
+              <div className="flex items-start gap-5 md:flex-col md:gap-0">
+                {/* Step number */}
+                <div className="relative z-10 flex h-11 w-11 shrink-0 items-center justify-center rounded-[4px] border border-[#26262B] bg-[#1A1A1F] md:mb-6">
+                  <span className="font-mono text-sm font-semibold tabular text-[#FF4D00]">
+                    {step.num}
+                  </span>
+                </div>
+
+                {/* Content */}
+                <div className="pt-1 md:pt-0">
+                  <h3 className="mb-2 font-display font-semibold uppercase tracking-tight text-[#F4F4F2]">
+                    {step.title}
+                  </h3>
+                  <p className="font-sans text-sm leading-relaxed text-[#5C5E66]">{step.body}</p>
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   )

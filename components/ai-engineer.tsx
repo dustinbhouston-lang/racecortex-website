@@ -1,251 +1,202 @@
-"use client"
+'use client'
 
-import { useEffect, useRef, useState } from "react"
-import { Brain, Mic, Radio, Sparkles, Volume2 } from "lucide-react"
+import { useEffect, useRef, useState } from 'react'
 
-const chatMessages = [
-  { role: "engineer" as const, text: "Fuel's two short to the flag at this pace. Lift-and-coast out of sector 3 and I'll re-run it.", delay: 0 },
-  { role: "driver" as const,   text: "Copy. What's the gap to P3?", delay: 1200 },
-  { role: "engineer" as const, text: "1.4 and closing — you're three tenths a lap quicker. He pits in two; stay out and track position is yours.", delay: 2400 },
-  { role: "driver" as const,   text: "Can I make the end on this set?", delay: 3800 },
-  { role: "engineer" as const, text: "On the lift-and-coast, yes — you'll cross the line with half a litre. Tyre deg's flat over the last five laps, you're good.", delay: 5000 },
+type Role = 'clive' | 'driver'
+
+interface RadioLine {
+  id: number
+  role: Role
+  text: string
+  delay: number
+}
+
+const TRANSCRIPT: RadioLine[] = [
+  { id: 1, role: 'clive', text: 'Gap behind 0.8 and closing — defend into 1.', delay: 0 },
+  { id: 2, role: 'clive', text: 'Yellow sector 2, lift.', delay: 800 },
+  { id: 3, role: 'driver', text: "How's my fuel?", delay: 1800 },
+  { id: 4, role: 'clive', text: 'Two laps to spare. Short-shift 3 and 4.', delay: 2600 },
+  { id: 5, role: 'clive', text: 'Box this lap, you\'ll undercut P3.', delay: 3600 },
+  { id: 6, role: 'driver', text: 'Gap to P3 after the stop?', delay: 4600 },
+  { id: 7, role: 'clive', text: 'Estimated 2.4. He pits next lap, you come out ahead.', delay: 5400 },
 ]
 
-const capabilities = [
-  {
-    icon: Mic,
-    title: "Real-Time Race Comms",
-    description: "Ask a question, or get spoken updates on gaps, fuel, traffic, and strategy — just like a real pit wall.",
-  },
-  {
-    icon: Brain,
-    title: "Knows How You Race",
-    description: "Clive builds a profile of your tendencies and adapts how it calls the race to you — not a one-size-fits-all robot.",
-  },
-  {
-    icon: Sparkles,
-    title: "Setup Recommendations",
-    description: "Analyzes your telemetry and car balance to suggest manufacturer-grounded setup changes for supported cars.",
-  },
-]
+function RadioEntry({ line, visible }: { line: RadioLine; visible: boolean }) {
+  const isClive = line.role === 'clive'
+  return (
+    <div
+      className={`transition-all duration-500 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
+      style={{ transitionDelay: visible ? '0ms' : undefined }}
+    >
+      <div className={`flex items-start gap-3 ${isClive ? '' : 'flex-row-reverse'}`}>
+        {/* Role badge */}
+        <div className="shrink-0 mt-0.5">
+          <span
+            className={`inline-flex items-center gap-1.5 rounded-[3px] border px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] ${
+              isClive
+                ? 'border-[#FF4D00]/40 bg-[#FF4D00]/10 text-[#FF4D00]'
+                : 'border-[#26262B] bg-[#202026] text-[#5C5E66]'
+            }`}
+          >
+            {isClive ? (
+              <>
+                <span className="h-1.5 w-1.5 rounded-full bg-[#FF4D00]" aria-hidden="true" />
+                Clive
+              </>
+            ) : (
+              <>
+                <span className="h-1.5 w-1.5 rounded-full bg-[#5C5E66]" aria-hidden="true" />
+                Driver
+              </>
+            )}
+          </span>
+        </div>
+
+        {/* Message */}
+        <div
+          className={`rounded-[6px] border px-4 py-2.5 max-w-sm md:max-w-md ${
+            isClive
+              ? 'border-[#26262B] bg-[#1A1A1F] text-[#F4F4F2]'
+              : 'border-[#26262B] bg-[#202026] text-[#8A8C92]'
+          }`}
+        >
+          <p className="font-sans text-sm leading-relaxed">{line.text}</p>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export function AiEngineer() {
-  const [visibleMessages, setVisibleMessages] = useState(0)
-  const [reducedMotion, setReducedMotion] = useState(false)
-  const [inView, setInView] = useState(false)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const panelRef = useRef<HTMLDivElement>(null)
+  const [visibleCount, setVisibleCount] = useState(0)
+  const [hasStarted, setHasStarted] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
 
-  // Detect reduced-motion after mount (avoids hydration mismatch)
   useEffect(() => {
-    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
-    const reduce = mq.matches
-    setReducedMotion(reduce)
-    if (!reduce) {
-      videoRef.current?.play().catch(() => {})
-    }
-  }, [])
-
-  // Scroll-triggered reveal — fires once when panel first enters viewport
-  useEffect(() => {
-    const el = panelRef.current
-    if (!el) return
     const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setInView(true)
-          observer.disconnect()
+      ([entry]) => {
+        if (entry.isIntersecting && !hasStarted) {
+          setHasStarted(true)
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.2 }
     )
-    observer.observe(el)
+    if (sectionRef.current) observer.observe(sectionRef.current)
     return () => observer.disconnect()
-  }, [])
+  }, [hasStarted])
 
-  // Message reveal — gated on inView; reduced-motion shows all immediately
   useEffect(() => {
-    if (!inView) return
-    if (reducedMotion) {
-      setVisibleMessages(chatMessages.length)
-      return
-    }
-    if (visibleMessages >= chatMessages.length) return
-
-    const prevDelay = visibleMessages > 0 ? chatMessages[visibleMessages - 1].delay : 0
-    const nextDelay = chatMessages[visibleMessages].delay - prevDelay
-
-    const timeout = setTimeout(() => {
-      setVisibleMessages((v) => v + 1)
-    }, visibleMessages === 0 ? 800 : nextDelay)
-
-    return () => clearTimeout(timeout)
-  }, [inView, visibleMessages, reducedMotion])
+    if (!hasStarted) return
+    // Collect every timer so the effect cleanup can clear them. Returning the
+    // cleanup from inside forEach (as before) only returned from the callback —
+    // the timers leaked and fired setState after unmount.
+    const timers = TRANSCRIPT.map((line) =>
+      setTimeout(() => {
+        setVisibleCount((c) => c + 1)
+      }, line.delay),
+    )
+    return () => timers.forEach(clearTimeout)
+  }, [hasStarted])
 
   return (
-    <section id="ai-engineer" className="relative px-5 py-20 lg:px-8 lg:py-32">
-      <div className="mx-auto max-w-7xl">
+    <section
+      id="ai-engineer"
+      ref={sectionRef}
+      aria-labelledby="ai-engineer-heading"
+      className="relative py-24 lg:py-32"
+    >
+      {/* Faint ember from top-left */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background:
+            'radial-gradient(ellipse 50% 40% at 5% 50%, rgba(255,77,0,0.07) 0%, transparent 70%)',
+        }}
+      />
+
+      <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         {/* Section header */}
-        <div className="flex flex-col items-center text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2">
-            <Brain size={14} className="text-primary" />
-            <span className="font-mono text-sm font-semibold uppercase tracking-widest text-primary">
-              Core Feature
-            </span>
-          </span>
-          <h2 className="mt-6 font-display text-3xl font-bold tracking-tight text-foreground sm:text-4xl lg:text-6xl">
-            <span className="text-balance">
-              NOT A COACH —
-              <br />
-              <span className="text-primary">YOUR RACE ENGINEER.</span>
-            </span>
+        <div className="mb-16">
+          <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-[#FF4D00]">
+            The Differentiator
+          </p>
+          <h2
+            id="ai-engineer-heading"
+            className="font-display font-bold uppercase text-balance"
+            style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
+          >
+            Voice-First.{' '}
+            <span className="text-[#8A8C92]">No Menus Mid-Corner.</span>
           </h2>
-          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground lg:text-lg">
-            RaceCortex isn&apos;t another AI driving coach — we&apos;ll leave the lap-by-lap tuition to the instructors. Clive is your race engineer: he feeds you the right information the moment you need it, answers when you ask, runs your fuel and tyre strategy, and reads the race in real time. No overlays to scan, no hotkeys to hunt for mid-corner — just talk to him and keep your eyes on the track.
+          <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-[#5C5E66]">
+            Clive calls the race in short, direct pit-wall radio. Hold push-to-talk and ask anything
+            — gaps, fuel, strategy — without lifting your eyes from the track.
           </p>
         </div>
 
-        {/* Main showcase: video + comms log */}
-        <div className="mt-12 grid gap-6 lg:mt-16 lg:grid-cols-2 lg:gap-0">
-          {/* Left - Abstract loop video */}
-          <div className="relative overflow-hidden rounded-sm border border-border lg:rounded-r-none">
-            <div className="relative aspect-[4/3] lg:aspect-auto lg:h-full lg:min-h-[520px]">
-              <video
-                ref={videoRef}
-                src="/video/ai-engineer-loop.mp4"
-                muted
-                loop={!reducedMotion}
-                playsInline
-                preload="metadata"
-                aria-label="Abstract motion graphic"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/30 to-transparent" />
-              <div className="absolute bottom-0 left-0 right-0 p-6 lg:p-8">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary">
-                    <Brain size={20} className="text-primary-foreground" />
-                  </div>
-                  <div>
-                    <span className="font-mono text-sm font-bold text-foreground">Clive</span>
-                    <p className="text-xs text-muted-foreground">Your personal race engineer</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Right - Team radio comms log */}
-          <div ref={panelRef} className="flex flex-col overflow-hidden rounded-sm border border-border bg-card lg:rounded-l-none lg:border-l-0">
-            {/* Radio header */}
-            <div className="flex items-center justify-between border-b border-border px-5 py-4">
-              <div className="flex items-center gap-2.5">
-                <Radio size={13} className="text-primary" />
-                <span className="font-mono text-xs font-semibold uppercase tracking-wider text-primary">
-                  Team Radio
-                </span>
-                <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-              </div>
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-start lg:gap-16">
+          {/* Transcript panel */}
+          <div
+            className="rounded-[6px] border border-[#26262B] bg-[rgba(26,26,31,0.92)] overflow-hidden"
+            role="log"
+            aria-label="Clive radio transcript"
+            aria-live="polite"
+          >
+            {/* Panel header */}
+            <div className="flex items-center justify-between border-b border-[#26262B] px-4 py-3">
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#5C5E66]">
+                Team Radio
+              </span>
               <div className="flex items-center gap-2">
-                <div className="flex items-end gap-[2px]">
-                  {[4, 6, 9, 7, 5].map((h, i) => (
-                    <div key={i} className="w-1 rounded-sm bg-primary/50" style={{ height: `${h}px` }} />
-                  ))}
-                </div>
-                <span className="font-mono text-[11px] text-muted-foreground">SPA · LAP 14</span>
-              </div>
-            </div>
-
-            {/* Comms log */}
-            <div className="flex flex-1 flex-col gap-2 overflow-y-auto p-5">
-              {chatMessages.slice(0, visibleMessages).map((msg, i) =>
-                msg.role === "engineer" ? (
-                  <div
-                    key={i}
-                    className={`flex flex-col gap-1.5 rounded-sm border border-primary/15 bg-primary/5 px-4 py-3${reducedMotion ? "" : " animate-in fade-in slide-in-from-bottom-2 duration-300"}`}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <Volume2 size={11} className="text-primary" />
-                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary">
-                        Clive
-                      </span>
-                    </div>
-                    <p className="font-mono text-sm leading-relaxed text-foreground">
-                      {msg.text}
-                    </p>
-                  </div>
-                ) : (
-                  <div
-                    key={i}
-                    className={`flex flex-col gap-1.5 px-4 py-3${reducedMotion ? "" : " animate-in fade-in slide-in-from-bottom-2 duration-300"}`}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <Mic size={11} className="text-muted-foreground/50" />
-                      <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-muted-foreground/50">
-                        You
-                      </span>
-                    </div>
-                    <p className="font-mono text-sm leading-relaxed text-foreground/75">
-                      {msg.text}
-                    </p>
-                  </div>
-                )
-              )}
-
-              {!reducedMotion && inView && visibleMessages < chatMessages.length && (
-                <div className="flex items-center gap-2 rounded-sm border border-primary/15 bg-primary/5 px-4 py-3">
-                  <Volume2 size={11} className="text-primary" />
-                  <span className="font-mono text-[10px] font-bold uppercase tracking-wider text-primary">Clive</span>
-                  <div className="ml-1 flex items-center gap-1">
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" />
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" style={{ animationDelay: "0.2s" }} />
-                    <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-primary" style={{ animationDelay: "0.4s" }} />
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Push-to-talk bar */}
-            <div className="border-t border-border px-5 py-4">
-              <div className="flex items-center gap-4">
-                <div className="flex items-end gap-[2px] opacity-20">
-                  {[4, 7, 10, 8, 13, 6, 9, 11, 7, 4].map((h, i) => (
-                    <div key={i} className="w-[3px] rounded-full bg-foreground" style={{ height: `${h}px` }} />
-                  ))}
-                </div>
-                <button
-                  disabled
-                  aria-label="Push to talk — voice comms are live in the app"
-                  className="flex h-10 w-10 shrink-0 cursor-default items-center justify-center rounded-full border border-primary/40 bg-primary/10 text-primary"
-                >
-                  <Mic size={16} />
-                </button>
-                <span className="font-mono text-[11px] uppercase tracking-widest text-muted-foreground/40">
-                  Hold to Talk
+                <span className="h-1.5 w-1.5 rounded-full bg-[#FF4D00] ember-pulse" aria-hidden="true" />
+                <span className="font-mono text-[9px] uppercase tracking-[0.15em] text-[#FF4D00]">
+                  Live
                 </span>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Capabilities row */}
-        <div className="mt-8 grid gap-4 sm:grid-cols-3 lg:mt-12 lg:gap-6">
-          {capabilities.map((cap) => (
-            <div
-              key={cap.title}
-              className="flex flex-col rounded-sm border border-primary/20 bg-primary/5 p-6 lg:p-8"
-            >
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <cap.icon size={22} />
-              </div>
-              <h3 className="mt-4 font-display text-base font-bold text-foreground">
-                {cap.title}
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                {cap.description}
-              </p>
+            {/* Messages */}
+            <div className="flex flex-col gap-4 p-5 min-h-[320px]">
+              {TRANSCRIPT.map((line, i) => (
+                <RadioEntry key={line.id} line={line} visible={i < visibleCount} />
+              ))}
             </div>
-          ))}
+          </div>
+
+          {/* Feature callouts */}
+          <div className="flex flex-col gap-6">
+            {[
+              {
+                label: 'Voice-First',
+                title: 'Clive speaks to you',
+                body: 'A calm, competent voice calls gaps, traffic, flags, and strategy — no reading overlays at 200 km/h.',
+              },
+              {
+                label: 'Push-to-Talk',
+                title: 'Ask anything, mid-session',
+                body: '"Gap behind?" "How\'s my fuel?" "When do I pit?" Hold the button. Get a direct answer.',
+              },
+              {
+                label: 'Pit Wall Radio',
+                title: 'Short. Direct. Professional.',
+                body: "Clive doesn't narrate laps. He calls what matters, when it matters, in the language real engineers use.",
+              },
+            ].map((item) => (
+              <div
+                key={item.label}
+                className="rounded-[6px] border border-[#26262B] bg-[rgba(26,26,31,0.6)] p-5"
+              >
+                <p className="mb-2 font-mono text-[9px] uppercase tracking-[0.2em] text-[#FF4D00]">
+                  {item.label}
+                </p>
+                <h3 className="mb-2 font-display font-semibold uppercase tracking-tight text-[#F4F4F2]">
+                  {item.title}
+                </h3>
+                <p className="font-sans text-sm leading-relaxed text-[#5C5E66]">{item.body}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>

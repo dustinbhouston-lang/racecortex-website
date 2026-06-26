@@ -1,80 +1,94 @@
-import Image from "next/image"
-import { ArrowRight } from "lucide-react"
-import { CliveIndicator } from "@/components/clive-indicator"
+import { CliveIndicator } from './clive-indicator'
+
+const STATS = [
+  { value: '120+', label: 'Telemetry Channels' },
+  { value: '60Hz', label: 'Live Sampling' },
+  { value: 'Real-Time', label: 'Race Comms' },
+]
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-[100svh] flex-col items-center justify-center overflow-hidden px-5 pt-20 lg:px-8">
-      {/* Background image */}
-      <div className="absolute inset-0 z-0">
-        <Image
-          src="/images/hero-carbon-streak.webp"
-          alt=""
-          fill
-          sizes="100vw"
-          className="object-cover opacity-40"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/40 to-background" />
-      </div>
+    <section
+      id="hero"
+      aria-labelledby="hero-headline"
+      className="relative min-h-[100svh] flex flex-col justify-center overflow-hidden"
+    >
+      {/* Legibility scrims — no opaque fill, global SiteBackground shows through */}
+      {/* Radial darkening centred behind headline text */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 z-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse 80% 60% at 50% 42%, rgba(12,12,14,0.62) 0%, transparent 75%)',
+        }}
+      />
+      {/* Bottom fade so stat strip stays readable */}
+      <div
+        aria-hidden="true"
+        className="absolute bottom-0 left-0 right-0 h-40 z-0 pointer-events-none"
+        style={{ background: 'linear-gradient(to top, rgba(12,12,14,0.85), transparent)' }}
+      />
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto flex max-w-4xl flex-col items-center text-center">
-        <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2">
-          <span className="h-2 w-2 rounded-full bg-primary animate-pulse" />
-          <span className="text-sm font-medium text-primary">
-            Powered by AI
-          </span>
-        </div>
+      {/* Main content */}
+      <div className="relative z-10 mx-auto max-w-5xl px-6 pt-32 pb-40 text-center lg:px-8">
 
-        <h1 className="font-display text-4xl font-bold leading-[1.1] tracking-tight text-foreground sm:text-6xl lg:text-8xl">
-          <span className="text-balance">
-            YOUR AI
-            <br />
-            <span className="text-primary">RACE ENGINEER</span>
-          </span>
-        </h1>
-
-        <p className="mt-6 max-w-xl text-base leading-relaxed text-muted-foreground sm:text-lg lg:mt-8 lg:text-xl">
-          An AI engineer that rides shotgun every session — it reads your telemetry, runs your race strategy, and answers when you ask, so you can keep your eyes on the track.
+        {/* Eyebrow */}
+        <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.25em] text-[#FF4D00]">
+          iRacing &mdash; AI Race Engineer
         </p>
 
-        <div className="mt-10 lg:mt-12">
+        {/* Headline */}
+        <h1
+          id="hero-headline"
+          className="font-display font-bold uppercase text-balance leading-[0.9] tracking-[-0.01em]"
+          style={{ fontSize: 'clamp(2.8rem, 8vw, 6.5rem)' }}
+        >
+          <span className="block text-[#F4F4F2]">Your AI</span>
+          <span className="block text-[#FF4D00]">Race Engineer</span>
+        </h1>
+
+        {/* Subcopy */}
+        <p className="mx-auto mt-8 max-w-2xl font-sans text-base leading-relaxed text-[#8A8C92] text-pretty md:text-lg">
+          An AI engineer that rides shotgun every session &mdash; it reads your telemetry, calls
+          your race, and answers when you ask, so you can keep your eyes on the track.
+        </p>
+
+        {/* Clive indicator */}
+        <div className="mt-12 mb-12">
           <CliveIndicator />
         </div>
 
-        <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
+        {/* CTA */}
+        <div className="flex justify-center">
           <a
-            href="#pricing"
-            className="inline-flex h-12 items-center justify-center gap-2 rounded-sm bg-primary px-6 text-base font-semibold text-primary-foreground transition-colors hover:bg-primary/90 sm:h-14 sm:px-8"
+            href="#early-access"
+            className="rounded-[4px] bg-[#FF4D00] px-8 py-3.5 font-display text-sm font-semibold uppercase tracking-[0.1em] text-[#0C0C0E] transition-colors hover:bg-[#CC3E00] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4D00] focus-visible:ring-offset-2 focus-visible:ring-offset-[#0C0C0E]"
           >
-            Meet Your AI Engineer
-            <ArrowRight size={18} />
-          </a>
-          <a
-            href="#features"
-            className="inline-flex h-12 items-center justify-center rounded-sm border border-border bg-secondary/50 px-6 text-base font-semibold text-foreground transition-colors hover:bg-secondary sm:h-14 sm:px-8"
-          >
-            See How It Works
+            Get Early Access
           </a>
         </div>
+      </div>
 
-        {/* Stats row */}
-        <div className="mt-16 grid w-full grid-cols-3 gap-4 border-t border-border pt-8 lg:mt-20 lg:gap-8">
-          {[
-            { value: "120+", label: "Telemetry channels" },
-            { value: "60Hz", label: "Live sampling" },
-            { value: "Real-time", label: "Live race comms" },
-          ].map((stat) => (
-            <div key={stat.label} className="flex flex-col items-center">
-              <span className="font-mono text-2xl font-bold text-primary sm:text-3xl lg:text-4xl">
-                {stat.value}
-              </span>
-              <span className="mt-1 text-center text-xs text-muted-foreground sm:text-sm">
-                {stat.label}
-              </span>
-            </div>
-          ))}
+      {/* Stat strip */}
+      <div className="absolute bottom-0 left-0 right-0 z-10 border-t border-[#26262B]">
+        <div className="mx-auto max-w-7xl">
+          <dl className="grid grid-cols-3 divide-x divide-[#26262B]">
+            {STATS.map((s) => (
+              <div
+                key={s.label}
+                className="flex flex-col items-center gap-1 px-4 py-4 md:flex-row md:justify-center md:gap-3"
+              >
+                <dt className="sr-only">{s.label}</dt>
+                <dd className="font-mono text-lg font-semibold tabular text-[#F4F4F2] md:text-xl">
+                  {s.value}
+                </dd>
+                <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#5C5E66] text-center">
+                  {s.label}
+                </span>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>

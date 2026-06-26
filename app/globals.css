@@ -97,6 +97,16 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+
+  /* Extended IGNITION palette (used by the landing redesign) */
+  --color-surface-2: #202026;
+  --color-text-muted: #5C5E66;
+  --color-ignition-dim: #CC3E00;
+  --color-gain: #00D26A;
+  --color-loss: #FF3B30;
+  --color-caution: #FFC400;
+  --color-best: #B388FF;
+
   --color-chart-1: var(--chart-1);
   --color-chart-2: var(--chart-2);
   --color-chart-3: var(--chart-3);
@@ -226,4 +236,116 @@
 }
 .rc-prose tbody tr:last-child td {
   border-bottom: none;
+}
+
+/* ── Landing redesign: animated background & motion ──────────────── */
+
+/* Site-wide animated ember background drift */
+@keyframes site-bg-drift-orange {
+  0%   { transform: translate(0, 0) scale(1); }
+  50%  { transform: translate(-7%, 5.5%) scale(1.22); }
+  100% { transform: translate(6%, -4.5%) scale(1.12); }
+}
+
+@keyframes site-bg-drift-blue {
+  0%   { transform: translate(0, 0) scale(1.06); }
+  50%  { transform: translate(8%, -6.5%) scale(1.24); }
+  100% { transform: translate(-6%, 5.5%) scale(1.14); }
+}
+
+.site-bg-ember-orange {
+  animation: site-bg-drift-orange 15s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+.site-bg-ember-blue {
+  animation: site-bg-drift-blue 19s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-bg-ember-orange,
+  .site-bg-ember-blue {
+    animation: none;
+  }
+}
+
+/* Ambient background ember glow */
+.ember-bg {
+  position: relative;
+  overflow: hidden;
+}
+.ember-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 60% 50% at 95% 0%, rgba(255, 77, 0, 0.14) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 30% at 50% 0%, rgba(244, 244, 242, 0.02) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(0, 0, 0, 0.6) 0%, transparent 80%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Breathing ember pulse */
+@keyframes ember-breathe {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+.ember-pulse {
+  animation: ember-breathe 4s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ember-pulse {
+    animation: none;
+  }
+}
+
+/* Clive voice indicator waveform */
+@keyframes waveform-bar {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
+}
+
+.wave-bar {
+  animation: waveform-bar var(--duration, 0.8s) ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wave-bar {
+    animation: none;
+    transform: scaleY(0.5);
+  }
+}
+
+/* Scroll reveal */
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.reveal {
+  opacity: 0;
+  animation: fade-up 0.6s ease-out forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    animation: none;
+  }
+}
+
+/* Monospace tabular numbers */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
 }

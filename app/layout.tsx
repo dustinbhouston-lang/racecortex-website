@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter, Oxanium, IBM_Plex_Mono } from 'next/font/google'
 import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
+import { SiteBackground } from '@/components/site-background'
 
 const inter = Inter({
   subsets: ['latin'],
@@ -10,7 +11,7 @@ const inter = Inter({
 
 const oxanium = Oxanium({
   subsets: ['latin'],
-  weight: ['500', '600', '700'],
+  weight: ['400', '500', '600', '700'],
   variable: '--font-oxanium',
 })
 
@@ -28,8 +29,17 @@ export const viewport: Viewport = {
 }
 
 export const metadata: Metadata = {
-  title: 'RaceCortex - Sim Racing Intelligence',
-  description: 'Real-time telemetry, race strategy, and an AI race engineer that calls the race with you — for sim racers who demand more.',
+  title: 'RaceCortex — Your AI Race Engineer',
+  description:
+    'An AI engineer that rides shotgun every session — it reads your telemetry, calls your race, and answers when you ask, so you can keep your eyes on the track.',
+  keywords: ['sim racing', 'iRacing', 'AI race engineer', 'race telemetry', 'Clive', 'RaceCortex'],
+  openGraph: {
+    title: 'RaceCortex — Your AI Race Engineer',
+    description:
+      'An AI engineer that rides shotgun every session — it reads your telemetry, calls your race, and answers when you ask.',
+    siteName: 'RaceCortex',
+    type: 'website',
+  },
   icons: {
     icon: [
       {
@@ -63,7 +73,8 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
-        {children}
+        <SiteBackground />
+        <div className="relative z-10">{children}</div>
         <Analytics />
       </body>
     </html>
