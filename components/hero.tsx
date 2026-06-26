@@ -35,7 +35,7 @@ export function Hero() {
 
         {/* Eyebrow */}
         <p className="mb-6 font-mono text-[10px] uppercase tracking-[0.25em] text-[#FF4D00]">
-          iRacing &mdash; AI Race Engineer
+          AI Race Engineer
         </p>
 
         {/* Headline */}

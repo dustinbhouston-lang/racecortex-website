@@ -12,7 +12,7 @@ const FOOTER_LINKS = {
     { label: 'Terms', href: '/terms' },
   ],
   Community: [
-    { label: 'Discord', href: 'https://discord.gg/racecortex' },
+    { label: 'Discord', href: 'https://discord.gg/QB23G2Ujb' },
   ],
 }
 

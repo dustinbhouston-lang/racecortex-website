@@ -96,6 +96,10 @@ export function Features() {
             </article>
           ))}
         </div>
+
+        <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-[#5C5E66]">
+          Built for iRacing today — more sims on the roadmap.
+        </p>
       </div>
     </section>
   )

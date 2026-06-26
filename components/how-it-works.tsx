@@ -27,7 +27,7 @@ export function HowItWorks() {
         {/* Header */}
         <div className="mb-16">
           <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.25em] text-[#FF4D00]">
-            Quick Start
+            How It Works
           </p>
           <h2
             id="how-it-works-heading"
