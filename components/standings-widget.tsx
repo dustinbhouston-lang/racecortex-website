@@ -1,5 +1,4 @@
 import React from 'react'
-import { ManufacturerLogo } from './manufacturer-logo'
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -168,11 +167,6 @@ function StandingsRow({
         </span>
       </div>
 
-      {/* Manufacturer logo */}
-      <div className="w-[22px] flex-shrink-0 flex items-center justify-center">
-        <ManufacturerLogo manufacturer={row.manufacturer} size={16} />
-      </div>
-
       {/* Car number */}
       <div className="pl-[4px] pr-[6px] w-[28px] flex-shrink-0">
         <span
@@ -311,8 +305,6 @@ export function StandingsWidget({
       >
         {/* pos */}
         <div className="w-[28px] flex-shrink-0" />
-        {/* logo */}
-        <div className="w-[22px] flex-shrink-0" />
         {/* num */}
         <div className="w-[28px] flex-shrink-0" />
         {/* driver */}

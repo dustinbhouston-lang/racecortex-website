@@ -1,5 +1,4 @@
 import React from 'react'
-import { ManufacturerLogo } from './manufacturer-logo'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -175,11 +174,6 @@ function RelativeRowItem({
         </span>
       </div>
 
-      {/* Manufacturer logo */}
-      <div className="w-[20px] flex-shrink-0 flex items-center justify-center">
-        <ManufacturerLogo manufacturer={row.manufacturer} size={16} />
-      </div>
-
       {/* Driver name */}
       <div className="flex-1 min-w-0 px-[6px]">
         <span
@@ -353,8 +347,6 @@ export function RelativeWidget({
       >
         {/* pos */}
         <div className="w-[32px] flex-shrink-0" />
-        {/* logo */}
-        <div className="w-[20px] flex-shrink-0" />
         {/* driver */}
         <div className="flex-1 px-[6px]">
           <span
