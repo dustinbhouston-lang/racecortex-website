@@ -53,11 +53,10 @@ export default function StartPage() {
           <strong>Settings</strong>.
         </li>
         <li>
-          <strong>On-screen:</strong> during the beta RaceCortex is{" "}
-          <strong>voice-first</strong> — the only thing on your screen is a small{" "}
-          <strong>Clive indicator</strong> that lights up when he's listening or
-          speaking. (On-track data overlays — relative, standings, fuel — are coming
-          in a later update.)
+          <strong>On-screen:</strong> alongside the voice engineer you get the{" "}
+          <strong>Ignition on-track overlays</strong> — relative, standings, fuel
+          and more — plus a small <strong>Clive indicator</strong> that lights up
+          when he's listening or speaking.
         </li>
       </ul>
 

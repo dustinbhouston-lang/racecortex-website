@@ -4,7 +4,7 @@ const PLAN_INCLUDES = [
   'Push-to-talk ask-anything',
   'Gap, traffic & incident calls',
   'Fuel & strategy comms',
-  'Full Ignition overlay suite (rolling out during beta)',
+  'Full Ignition overlay suite included',
   'Priority support & beta feedback access',
 ]
 

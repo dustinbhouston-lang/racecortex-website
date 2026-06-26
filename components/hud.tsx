@@ -148,7 +148,7 @@ export function Hud() {
               <div className="absolute bottom-3 left-4 flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#FF4D00] ember-pulse" aria-hidden="true" />
                 <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#5C5E66]">
-                  Rolling out during beta · static preview
+                  Ignition Overlay · Static Preview
                 </span>
               </div>
             </div>
@@ -171,7 +171,7 @@ export function Hud() {
               The Ignition Overlay drops floating glass panels directly into your broadcast —
               multiclass standings, relative timing gaps, license, and iRating all readable at
               race speed. No alt-tab. No mental overhead. Just the data you need, exactly when
-              you need it — rolling out through the beta.
+              you need it.
             </p>
 
             <div className="flex flex-col gap-4">
