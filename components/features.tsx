@@ -59,7 +59,7 @@ export function Features() {
             From Green Flag{' '}
             <span className="text-[#AEB1B8]">to Checkered.</span>
           </h2>
-          <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-[#8A8C92]">
+          <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-[#F4F4F2] rc-text-halo">
             Everything a race engineer does — gaps, fuel, strategy, incidents, even your pit stop — by voice, so your eyes never leave the track.
           </p>
         </div>

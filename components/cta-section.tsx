@@ -72,7 +72,7 @@ export function CtaSection() {
           Get Your Engineer{' '}
           <span className="text-[#FF4D00]">On The Radio.</span>
         </h2>
-        <p className="mx-auto mt-5 max-w-xl font-sans text-base leading-relaxed text-[#8A8C92]">
+        <p className="mx-auto mt-5 max-w-xl font-sans text-base leading-relaxed text-[#F4F4F2] rc-text-halo">
           RaceCortex is invite-only during beta. Join the waitlist and we&apos;ll reach out when
           your spot is ready.
         </p>

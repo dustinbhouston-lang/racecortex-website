@@ -167,7 +167,7 @@ export function Hud() {
               Your Race Data.{' '}
               <span className="text-[#AEB1B8]">Front and Center.</span>
             </h2>
-            <p className="mt-4 mb-8 font-sans text-base leading-relaxed text-[#8A8C92]">
+            <p className="mt-4 mb-8 font-sans text-base leading-relaxed text-[#F4F4F2] rc-text-halo">
               The Ignition Overlay drops floating glass panels directly into your broadcast —
               multiclass standings, relative timing gaps, license, and iRating all readable at
               race speed. No alt-tab. No mental overhead. Just the data you need, exactly when

@@ -73,7 +73,7 @@ export function HowItWorks() {
                   <h3 className="mb-2 font-display font-semibold uppercase tracking-tight text-[#F4F4F2]">
                     {step.title}
                   </h3>
-                  <p className="font-sans text-sm leading-relaxed text-[#8A8C92]">{step.body}</p>
+                  <p className="font-sans text-sm leading-relaxed text-[#F4F4F2] rc-text-halo">{step.body}</p>
                 </div>
               </div>
             </li>

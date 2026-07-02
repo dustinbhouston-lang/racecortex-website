@@ -129,7 +129,7 @@ export function AiEngineer() {
             Voice-First.{' '}
             <span className="text-[#AEB1B8]">No Menus Mid-Corner.</span>
           </h2>
-          <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-[#8A8C92]">
+          <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-[#F4F4F2] rc-text-halo">
             Clive calls the race in short, direct pit-wall radio. Hold push-to-talk and ask anything
             — gaps, fuel, strategy — without lifting your eyes from the track.
           </p>
