@@ -240,36 +240,6 @@
 
 /* ── Landing redesign: animated background & motion ──────────────── */
 
-/* Site-wide animated ember background drift */
-@keyframes site-bg-drift-orange {
-  0%   { transform: translate(0, 0) scale(1); }
-  50%  { transform: translate(-7%, 5.5%) scale(1.22); }
-  100% { transform: translate(6%, -4.5%) scale(1.12); }
-}
-
-@keyframes site-bg-drift-blue {
-  0%   { transform: translate(0, 0) scale(1.06); }
-  50%  { transform: translate(8%, -6.5%) scale(1.24); }
-  100% { transform: translate(-6%, 5.5%) scale(1.14); }
-}
-
-.site-bg-ember-orange {
-  animation: site-bg-drift-orange 15s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
-.site-bg-ember-blue {
-  animation: site-bg-drift-blue 19s ease-in-out infinite alternate;
-  will-change: transform;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .site-bg-ember-orange,
-  .site-bg-ember-blue {
-    animation: none;
-  }
-}
-
 /* Ambient background ember glow */
 .ember-bg {
   position: relative;
