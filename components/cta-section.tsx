@@ -6,6 +6,8 @@ type Status = 'idle' | 'submitting' | 'success' | 'error'
 
 export function CtaSection() {
   const [email, setEmail] = useState('')
+  // Honeypot: real users never see or fill this; a non-empty value flags a bot.
+  const [company, setCompany] = useState('')
   const [status, setStatus] = useState<Status>('idle')
   const [error, setError] = useState('')
 
@@ -23,7 +25,7 @@ export function CtaSection() {
       const res = await fetch('/api/waitlist', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, source: 'landing-cta' }),
+        body: JSON.stringify({ email, source: 'landing-cta', company }),
       })
 
       if (!res.ok) {
@@ -91,6 +93,22 @@ export function CtaSection() {
             noValidate
             aria-label="Early access waitlist form"
           >
+            {/* Honeypot — off-screen, hidden from AT, out of tab order. Bots fill it; humans never see it. */}
+            <div
+              aria-hidden="true"
+              className="absolute left-[-9999px] top-[-9999px] h-0 w-0 overflow-hidden"
+            >
+              <label htmlFor="company">Company</label>
+              <input
+                id="company"
+                name="company"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+              />
+            </div>
             <div className="flex flex-col w-full sm:w-auto">
               <label htmlFor="cta-email" className="sr-only">
                 Email address

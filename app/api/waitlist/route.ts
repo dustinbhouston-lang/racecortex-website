@@ -12,6 +12,7 @@
  */
 
 import { NextResponse, type NextRequest } from 'next/server'
+import { checkBotId } from 'botid/server'
 import { getAdminClient } from '@/lib/supabase/admin'
 
 // Service-role key + supabase-js use Node APIs — pin to the Node.js runtime.
@@ -28,6 +29,25 @@ export async function POST(request: NextRequest) {
     body = await request.json()
   } catch {
     return NextResponse.json({ error: 'Invalid request body.' }, { status: 400 })
+  }
+
+  // Honeypot: `company` is an off-screen field no real user sees. If a bot filled
+  // it, fake success (200) without inserting — never reach the DB or surface a
+  // validation error. Checked before email validation on purpose.
+  const rawCompany = (body as { company?: unknown })?.company
+  const company = typeof rawCompany === 'string' ? rawCompany.trim() : ''
+  if (company) {
+    return NextResponse.json({ ok: true })
+  }
+
+  // Vercel BotID (Basic mode) — block automated clients. Runs after the cheap
+  // honeypot check so a filled honeypot never costs a BotID round-trip.
+  const verification = await checkBotId()
+  if (verification.isBot) {
+    return NextResponse.json(
+      { error: 'Could not join the waitlist. Please try again.' },
+      { status: 403 },
+    )
   }
 
   const email =
