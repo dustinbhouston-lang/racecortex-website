@@ -32,7 +32,7 @@ export function Footer() {
                 className="mb-3 h-7 w-auto object-contain"
               />
             </Link>
-            <p className="font-sans text-xs leading-relaxed text-[#5C5E66]">
+            <p className="font-sans text-xs leading-relaxed text-[#8A8C92]">
               Your AI race engineer for sim racing.
             </p>
           </div>
@@ -40,7 +40,7 @@ export function Footer() {
           {/* Link columns */}
           {Object.entries(FOOTER_LINKS).map(([group, links]) => (
             <div key={group}>
-              <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5C5E66]">
+              <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.2em] text-[#8A8C92]">
                 {group}
               </p>
               <ul className="flex flex-col gap-3" role="list">
@@ -48,7 +48,7 @@ export function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="rounded-sm font-sans text-sm text-[#8A8C92] transition-colors hover:text-[#F4F4F2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4D00]"
+                      className="rounded-sm font-sans text-sm text-[#AEB1B8] transition-colors hover:text-[#F4F4F2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4D00]"
                     >
                       {link.label}
                     </a>
@@ -61,11 +61,11 @@ export function Footer() {
 
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col gap-4 border-t border-[#26262B] pt-8 md:flex-row md:items-center md:justify-between">
-          <p className="max-w-lg font-mono text-[9px] leading-relaxed text-[#5C5E66]">
+          <p className="max-w-lg font-mono text-[9px] leading-relaxed text-[#8A8C92]">
             Independent product &mdash; not affiliated with, endorsed by, or sponsored by
             iRacing.com Motorsport Simulations, LLC.
           </p>
-          <p className="shrink-0 font-mono text-[9px] text-[#5C5E66]">
+          <p className="shrink-0 font-mono text-[9px] text-[#8A8C92]">
             &copy; {new Date().getFullYear()} RaceCortex LLC
           </p>
         </div>

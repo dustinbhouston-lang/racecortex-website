@@ -31,6 +31,10 @@ export function SiteBackground() {
         offsetY={0}
         style={{ width: '100%', height: '100%' }}
       />
+      <div
+        className="absolute inset-0"
+        style={{ backgroundColor: 'rgba(12,12,14,0.4)' }}
+      />
     </div>
   )
 }

@@ -37,7 +37,7 @@ export function Pricing() {
             style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
           >
             One Plan.{' '}
-            <span className="text-[#8A8C92]">Everything Included.</span>
+            <span className="text-[#AEB1B8]">Everything Included.</span>
           </h2>
         </div>
 
@@ -66,10 +66,10 @@ export function Pricing() {
                   Free
                 </span>
               </div>
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-[#5C5E66]">
+              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-[#8A8C92]">
                 during the closed beta
               </p>
-              <p className="mt-3 font-sans text-xs leading-relaxed text-[#5C5E66]">
+              <p className="mt-3 font-sans text-xs leading-relaxed text-[#8A8C92]">
                 The closed beta is free. Paid plans arrive at launch — beta testers lock in founder
                 pricing. Invite-only: join the waitlist to secure your spot.
               </p>
@@ -77,7 +77,7 @@ export function Pricing() {
 
             {/* What&apos;s included */}
             <div className="px-6 py-5">
-              <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.2em] text-[#5C5E66]">
+              <p className="mb-4 font-mono text-[9px] uppercase tracking-[0.2em] text-[#8A8C92]">
                 Includes
               </p>
               <ul className="flex flex-col gap-3" role="list">
@@ -87,7 +87,7 @@ export function Pricing() {
                       className="mt-1 h-1.5 w-1.5 shrink-0 rounded-full bg-[#FF4D00]"
                       aria-hidden="true"
                     />
-                    <span className="font-sans text-sm leading-snug text-[#8A8C92]">{item}</span>
+                    <span className="font-sans text-sm leading-snug text-[#AEB1B8]">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -101,7 +101,7 @@ export function Pricing() {
               >
                 Get Early Access
               </a>
-              <p className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.15em] text-[#5C5E66]">
+              <p className="mt-3 text-center font-mono text-[9px] uppercase tracking-[0.15em] text-[#8A8C92]">
                 Beta is invite-based — waitlist open now
               </p>
             </div>

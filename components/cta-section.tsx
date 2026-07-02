@@ -72,7 +72,7 @@ export function CtaSection() {
           Get Your Engineer{' '}
           <span className="text-[#FF4D00]">On The Radio.</span>
         </h2>
-        <p className="mx-auto mt-5 max-w-xl font-sans text-base leading-relaxed text-[#5C5E66]">
+        <p className="mx-auto mt-5 max-w-xl font-sans text-base leading-relaxed text-[#8A8C92]">
           RaceCortex is invite-only during beta. Join the waitlist and we&apos;ll reach out when
           your spot is ready.
         </p>
@@ -82,7 +82,7 @@ export function CtaSection() {
             <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-[#00D26A] mb-1">
               You&apos;re on the list
             </span>
-            <span className="block font-sans text-sm text-[#8A8C92]">
+            <span className="block font-sans text-sm text-[#AEB1B8]">
               We&apos;ll be in touch when your beta access is ready.
             </span>
           </div>
@@ -129,7 +129,7 @@ export function CtaSection() {
                 aria-describedby={error ? 'cta-email-error' : undefined}
                 aria-invalid={!!error}
                 disabled={submitting}
-                className="w-full sm:w-72 rounded-[4px] border border-[#26262B] bg-[#1A1A1F] px-4 py-3 font-mono text-sm text-[#F4F4F2] placeholder-[#5C5E66] outline-none focus:border-[#FF4D00] focus:ring-1 focus:ring-[#FF4D00] transition-colors disabled:opacity-60"
+                className="w-full sm:w-72 rounded-[4px] border border-[#26262B] bg-[#1A1A1F] px-4 py-3 font-mono text-sm text-[#F4F4F2] placeholder-[#8A8C92] outline-none focus:border-[#FF4D00] focus:ring-1 focus:ring-[#FF4D00] transition-colors disabled:opacity-60"
               />
               {error && (
                 <span id="cta-email-error" role="alert" className="mt-1.5 text-left font-mono text-[10px] text-[#FF3B30]">
@@ -147,7 +147,7 @@ export function CtaSection() {
           </form>
         )}
 
-        <p className="mt-6 font-mono text-[9px] uppercase tracking-[0.15em] text-[#5C5E66]">
+        <p className="mt-6 font-mono text-[9px] uppercase tracking-[0.15em] text-[#8A8C92]">
           No credit card required &bull; Invite-only beta
         </p>
       </div>

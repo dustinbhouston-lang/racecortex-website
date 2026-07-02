@@ -35,7 +35,7 @@ function RadioEntry({ line, visible }: { line: RadioLine; visible: boolean }) {
             className={`inline-flex items-center gap-1.5 rounded-[3px] border px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.18em] ${
               isClive
                 ? 'border-[#FF4D00]/40 bg-[#FF4D00]/10 text-[#FF4D00]'
-                : 'border-[#26262B] bg-[#202026] text-[#5C5E66]'
+                : 'border-[#26262B] bg-[#202026] text-[#8A8C92]'
             }`}
           >
             {isClive ? (
@@ -57,7 +57,7 @@ function RadioEntry({ line, visible }: { line: RadioLine; visible: boolean }) {
           className={`rounded-[6px] border px-4 py-2.5 max-w-sm md:max-w-md ${
             isClive
               ? 'border-[#26262B] bg-[#1A1A1F] text-[#F4F4F2]'
-              : 'border-[#26262B] bg-[#202026] text-[#8A8C92]'
+              : 'border-[#26262B] bg-[#202026] text-[#AEB1B8]'
           }`}
         >
           <p className="font-sans text-sm leading-relaxed">{line.text}</p>
@@ -127,9 +127,9 @@ export function AiEngineer() {
             style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
           >
             Voice-First.{' '}
-            <span className="text-[#8A8C92]">No Menus Mid-Corner.</span>
+            <span className="text-[#AEB1B8]">No Menus Mid-Corner.</span>
           </h2>
-          <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-[#5C5E66]">
+          <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-[#8A8C92]">
             Clive calls the race in short, direct pit-wall radio. Hold push-to-talk and ask anything
             — gaps, fuel, strategy — without lifting your eyes from the track.
           </p>
@@ -145,7 +145,7 @@ export function AiEngineer() {
           >
             {/* Panel header */}
             <div className="flex items-center justify-between border-b border-[#26262B] px-4 py-3">
-              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#5C5E66]">
+              <span className="font-mono text-[9px] uppercase tracking-[0.2em] text-[#8A8C92]">
                 Team Radio
               </span>
               <div className="flex items-center gap-2">
@@ -193,7 +193,7 @@ export function AiEngineer() {
                 <h3 className="mb-2 font-display font-semibold uppercase tracking-tight text-[#F4F4F2]">
                   {item.title}
                 </h3>
-                <p className="font-sans text-sm leading-relaxed text-[#5C5E66]">{item.body}</p>
+                <p className="font-sans text-sm leading-relaxed text-[#8A8C92]">{item.body}</p>
               </div>
             ))}
           </div>

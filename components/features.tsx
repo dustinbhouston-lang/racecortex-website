@@ -57,9 +57,9 @@ export function Features() {
             style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
           >
             From Green Flag{' '}
-            <span className="text-[#8A8C92]">to Checkered.</span>
+            <span className="text-[#AEB1B8]">to Checkered.</span>
           </h2>
-          <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-[#5C5E66]">
+          <p className="mt-4 max-w-xl font-sans text-base leading-relaxed text-[#8A8C92]">
             Everything a race engineer does — gaps, fuel, strategy, incidents, even your pit stop — by voice, so your eyes never leave the track.
           </p>
         </div>
@@ -91,13 +91,13 @@ export function Features() {
                 <h3 className="mb-2 font-display font-semibold uppercase tracking-tight text-[#F4F4F2] text-sm">
                   {f.title}
                 </h3>
-                <p className="font-sans text-sm leading-relaxed text-[#5C5E66]">{f.body}</p>
+                <p className="font-sans text-sm leading-relaxed text-[#8A8C92]">{f.body}</p>
               </div>
             </article>
           ))}
         </div>
 
-        <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-[#5C5E66]">
+        <p className="mt-8 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-[#8A8C92]">
           Built for iRacing today — more sims on the roadmap.
         </p>
       </div>

@@ -35,7 +35,7 @@ export function HowItWorks() {
             style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
           >
             Up and Running{' '}
-            <span className="text-[#8A8C92]">in Three Steps.</span>
+            <span className="text-[#AEB1B8]">in Three Steps.</span>
           </h2>
         </div>
 
@@ -73,7 +73,7 @@ export function HowItWorks() {
                   <h3 className="mb-2 font-display font-semibold uppercase tracking-tight text-[#F4F4F2]">
                     {step.title}
                   </h3>
-                  <p className="font-sans text-sm leading-relaxed text-[#5C5E66]">{step.body}</p>
+                  <p className="font-sans text-sm leading-relaxed text-[#8A8C92]">{step.body}</p>
                 </div>
               </div>
             </li>

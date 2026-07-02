@@ -54,7 +54,7 @@ export function Navbar() {
             <li key={link.href}>
               <a
                 href={link.href}
-                className="rounded-sm px-1 font-mono text-xs uppercase tracking-[0.12em] text-[#8A8C92] transition-colors hover:text-[#F4F4F2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4D00]"
+                className="rounded-sm px-1 font-mono text-xs uppercase tracking-[0.12em] text-[#AEB1B8] transition-colors hover:text-[#F4F4F2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4D00]"
               >
                 {link.label}
               </a>
@@ -106,7 +106,7 @@ export function Navbar() {
                 <a
                   href={link.href}
                   onClick={() => setMenuOpen(false)}
-                  className="block rounded-sm py-2 font-mono text-xs uppercase tracking-[0.12em] text-[#8A8C92] transition-colors hover:text-[#F4F4F2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4D00]"
+                  className="block rounded-sm py-2 font-mono text-xs uppercase tracking-[0.12em] text-[#AEB1B8] transition-colors hover:text-[#F4F4F2] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#FF4D00]"
                 >
                   {link.label}
                 </a>
@@ -117,7 +117,7 @@ export function Navbar() {
               <Link
                 href="/download"
                 onClick={() => setMenuOpen(false)}
-                className="block rounded-sm py-2 font-mono text-xs uppercase tracking-[0.12em] text-[#8A8C92] transition-colors hover:text-[#F4F4F2]"
+                className="block rounded-sm py-2 font-mono text-xs uppercase tracking-[0.12em] text-[#AEB1B8] transition-colors hover:text-[#F4F4F2]"
               >
                 Log in
               </Link>

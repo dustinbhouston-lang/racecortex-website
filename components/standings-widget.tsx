@@ -36,7 +36,7 @@ function SessionBadge({ mode }: { mode: SessionMode }) {
   const map = {
     race:     { label: 'RACE',     color: '#00D26A' },
     qualify:  { label: 'QUALIFY',  color: '#FFC400' },
-    practice: { label: 'PRACTICE', color: '#8A8C92' },
+    practice: { label: 'PRACTICE', color: '#AEB1B8' },
   }
   const { label, color } = map[mode]
   return (
@@ -102,7 +102,7 @@ function ClassHeader({ cls }: { cls: StandingsClass }) {
         style={{
           fontFamily: 'var(--font-mono)',
           fontSize: '9px',
-          color: '#8A8C92',
+          color: '#AEB1B8',
         }}
       >
         {cls.rows.length} CARS
@@ -159,7 +159,7 @@ function StandingsRow({
             fontSize: '11px',
             fontWeight: 500,
             letterSpacing: 0,
-            color: row.isPlayer ? '#FF4D00' : '#8A8C92',
+            color: row.isPlayer ? '#FF4D00' : '#AEB1B8',
             fontVariantNumeric: 'tabular-nums',
           }}
         >
@@ -173,7 +173,7 @@ function StandingsRow({
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '10px',
-            color: '#8A8C92',
+            color: '#AEB1B8',
             fontVariantNumeric: 'tabular-nums',
           }}
         >
@@ -202,7 +202,7 @@ function StandingsRow({
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '11px',
-            color: row.isBest ? '#B388FF' : '#8A8C92',
+            color: row.isBest ? '#B388FF' : '#AEB1B8',
             fontVariantNumeric: 'tabular-nums',
           }}
         >
@@ -278,7 +278,7 @@ export function StandingsWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '9px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >
@@ -316,7 +316,7 @@ export function StandingsWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '8.5px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >
@@ -330,7 +330,7 @@ export function StandingsWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '8.5px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >

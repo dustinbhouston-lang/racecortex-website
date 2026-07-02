@@ -36,7 +36,7 @@ function SessionBadge({ type }: { type: SessionType }) {
   const map = {
     race:     { label: 'RACE',     color: '#00D26A' },
     qualify:  { label: 'QUALIFY',  color: '#FFC400' },
-    practice: { label: 'PRACTICE', color: '#8A8C92' },
+    practice: { label: 'PRACTICE', color: '#AEB1B8' },
   }
   const { label, color } = map[type]
   return (
@@ -141,8 +141,8 @@ function RelativeRowItem({
   if (isGapDash) gapColor = '#F4F4F2'
   else if (isLapping && isAhead) gapColor = '#00D26A'
   else if (row.state === 'pit') gapColor = '#FFC400'
-  else if (isAhead) gapColor = '#8A8C92'
-  else if (isBehind) gapColor = '#8A8C92'
+  else if (isAhead) gapColor = '#AEB1B8'
+  else if (isBehind) gapColor = '#AEB1B8'
 
   return (
     <div
@@ -166,7 +166,7 @@ function RelativeRowItem({
             fontFamily: 'var(--font-mono)',
             fontSize: '10px',
             fontWeight: 500,
-            color: row.isPlayer ? '#FF4D00' : '#8A8C92',
+            color: row.isPlayer ? '#FF4D00' : '#AEB1B8',
             fontVariantNumeric: 'tabular-nums',
           }}
         >
@@ -201,7 +201,7 @@ function RelativeRowItem({
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '10px',
-            color: '#8A8C92',
+            color: '#AEB1B8',
             fontVariantNumeric: 'tabular-nums',
           }}
         >
@@ -215,7 +215,7 @@ function RelativeRowItem({
           style={{
             fontFamily: 'var(--font-mono)',
             fontSize: '10px',
-            color: '#8A8C92',
+            color: '#AEB1B8',
             fontVariantNumeric: 'tabular-nums',
           }}
         >
@@ -273,7 +273,7 @@ export function RelativeWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '9px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >
@@ -297,7 +297,7 @@ export function RelativeWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '9px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >
@@ -354,7 +354,7 @@ export function RelativeWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '8.5px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >
@@ -370,7 +370,7 @@ export function RelativeWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '8.5px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >
@@ -384,7 +384,7 @@ export function RelativeWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '8.5px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >
@@ -398,7 +398,7 @@ export function RelativeWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '8.5px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >
@@ -423,7 +423,7 @@ export function RelativeWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '8.5px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >
@@ -447,7 +447,7 @@ export function RelativeWidget({
               fontFamily: 'var(--font-display)',
               fontSize: '8.5px',
               letterSpacing: '0.14em',
-              color: '#8A8C92',
+              color: '#AEB1B8',
               textTransform: 'uppercase',
             }}
           >

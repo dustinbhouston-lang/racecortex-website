@@ -15,7 +15,7 @@
   --secondary: #202026;
   --secondary-foreground: #F4F4F2;
   --muted: #1A1A1F;
-  --muted-foreground: #8A8C92;
+  --muted-foreground: #AEB1B8;
   --accent: #202026;
   --accent-foreground: #F4F4F2;
   --destructive: #FF3B30;
@@ -51,7 +51,7 @@
   --secondary: #202026;
   --secondary-foreground: #F4F4F2;
   --muted: #1A1A1F;
-  --muted-foreground: #8A8C92;
+  --muted-foreground: #AEB1B8;
   --accent: #202026;
   --accent-foreground: #F4F4F2;
   --destructive: #FF3B30;
@@ -100,7 +100,7 @@
 
   /* Extended IGNITION palette (used by the landing redesign) */
   --color-surface-2: #202026;
-  --color-text-muted: #5C5E66;
+  --color-text-muted: #8A8C92;
   --color-ignition-dim: #CC3E00;
   --color-gain: #00D26A;
   --color-loss: #FF3B30;

@@ -49,7 +49,7 @@ export function Hero() {
         </h1>
 
         {/* Subcopy */}
-        <p className="mx-auto mt-8 max-w-2xl font-sans text-base leading-relaxed text-[#8A8C92] text-pretty md:text-lg">
+        <p className="mx-auto mt-8 max-w-2xl font-sans text-base leading-relaxed text-[#AEB1B8] text-pretty md:text-lg">
           An AI engineer that rides shotgun every session &mdash; it reads your telemetry, calls
           your race, and answers when you ask, so you can keep your eyes on the track.
         </p>
@@ -83,7 +83,7 @@ export function Hero() {
                 <dd className="font-mono text-lg font-semibold tabular text-[#F4F4F2] md:text-xl">
                   {s.value}
                 </dd>
-                <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#5C5E66] text-center">
+                <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-[#8A8C92] text-center">
                   {s.label}
                 </span>
               </div>

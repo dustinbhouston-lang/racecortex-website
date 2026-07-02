@@ -147,7 +147,7 @@ export function Hud() {
               {/* "IGNITION OVERLAY" watermark badge */}
               <div className="absolute bottom-3 left-4 flex items-center gap-2">
                 <span className="h-1.5 w-1.5 rounded-full bg-[#FF4D00] ember-pulse" aria-hidden="true" />
-                <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#5C5E66]">
+                <span className="font-mono text-[8px] uppercase tracking-[0.2em] text-[#8A8C92]">
                   Ignition Overlay · Static Preview
                 </span>
               </div>
@@ -165,9 +165,9 @@ export function Hud() {
               style={{ fontSize: 'clamp(1.8rem, 4vw, 3rem)' }}
             >
               Your Race Data.{' '}
-              <span className="text-[#8A8C92]">Front and Center.</span>
+              <span className="text-[#AEB1B8]">Front and Center.</span>
             </h2>
-            <p className="mt-4 mb-8 font-sans text-base leading-relaxed text-[#5C5E66]">
+            <p className="mt-4 mb-8 font-sans text-base leading-relaxed text-[#8A8C92]">
               The Ignition Overlay drops floating glass panels directly into your broadcast —
               multiclass standings, relative timing gaps, license, and iRating all readable at
               race speed. No alt-tab. No mental overhead. Just the data you need, exactly when
@@ -192,7 +192,7 @@ export function Hud() {
                   />
                   <div className="flex flex-col gap-0.5">
                     <span className="font-mono text-[10px] uppercase tracking-[0.15em]" style={{ color: item.color }}>{item.title}</span>
-                    <span className="font-sans text-sm text-[#8A8C92]">{item.desc}</span>
+                    <span className="font-sans text-sm text-[#AEB1B8]">{item.desc}</span>
                   </div>
                 </div>
               ))}
