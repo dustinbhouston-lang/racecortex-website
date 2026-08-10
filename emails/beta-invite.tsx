@@ -75,6 +75,10 @@ export function BetaInviteEmail({
   return (
     <Html lang="en">
       <Head>
+        {/* Color-scheme hints — discourage Gmail/Apple Mail auto-inversion so the
+            intended dark theme is honored. */}
+        <meta name="color-scheme" content="dark light" />
+        <meta name="supported-color-schemes" content="dark light" />
         {/* Oxanium for headings — degrades gracefully to the bold system stack
             if the client blocks web fonts (most do). Never depended on. */}
         <Font
@@ -90,16 +94,45 @@ export function BetaInviteEmail({
       </Head>
       <Preview>You&apos;re in — set up RaceCortex and meet Clive.</Preview>
       <Body style={body}>
-        <Container style={container}>
-          {/* ── Header: horizontal white wordmark (absolute hosted URL) ── */}
-          <Section style={{ paddingBottom: "8px" }}>
-            <Img
-              src={`${baseUrl}/brand/racecortex-logo-horizontal-white.png`}
-              width="180"
-              alt="RaceCortex"
-              style={{ display: "block", border: "0", outline: "none" }}
-            />
-          </Section>
+        {/* Full-bleed dark wrapper — Gmail paints the area outside the content
+            table with its own default; this stops the off-white background.
+            bgcolor attr + background-color style (belt-and-suspenders). */}
+        <table
+          role="presentation"
+          width="100%"
+          cellPadding={0}
+          cellSpacing={0}
+          border={0}
+          bgcolor={colors.background}
+          style={fullBleed}
+        >
+          <tbody>
+            <tr>
+              <td {...tdBg(colors.background)} align="center" style={fullBleedCell}>
+                {/* Card / surface — dark via bgcolor + background-color. */}
+                <table
+                  role="presentation"
+                  width="560"
+                  cellPadding={0}
+                  cellSpacing={0}
+                  border={0}
+                  bgcolor={colors.surface}
+                  style={cardTable}
+                >
+                  <tbody>
+                    <tr>
+                      <td {...tdBg(colors.surface)} style={cardCell}>
+                        {/* ── Header: horizontal white wordmark (absolute hosted URL).
+                            Sits on this dark cell (bgcolor + background-color) so the
+                            white wordmark keeps contrast even on partial CSS failure. ── */}
+                        <Section style={{ paddingBottom: "8px" }}>
+                          <Img
+                            src={`${baseUrl}/brand/racecortex-logo-horizontal-orange.png`}
+                            width="180"
+                            alt="RaceCortex"
+                            style={{ display: "block", border: "0", outline: "none" }}
+                          />
+                        </Section>
 
           {/* ── Eyebrow ── */}
           <Text style={eyebrow}>BETA ACCESS</Text>
@@ -119,9 +152,25 @@ export function BetaInviteEmail({
           </Text>
           <Text style={paragraph}>{LIFETIME_FREE_COPY}</Text>
 
-          {/* ── Invite-code chip ── */}
+          {/* ── Invite-code chip — dark via bgcolor + background-color ── */}
           <Section style={{ padding: "8px 0 4px" }}>
-            <div style={codeChip}>{inviteCode}</div>
+            <table
+              role="presentation"
+              width="100%"
+              cellPadding={0}
+              cellSpacing={0}
+              border={0}
+              bgcolor={colors.background}
+              style={codeChipTable}
+            >
+              <tbody>
+                <tr>
+                  <td {...tdBg(colors.background)} style={codeChipCell}>
+                    {inviteCode}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
             <Text style={codeCaption}>single-use and tied to you</Text>
           </Section>
 
@@ -231,30 +280,60 @@ export function BetaInviteEmail({
               </Link>
             </Text>
             <Text style={footerText}>[RaceCortex LLC — mailing address]</Text>
-          </Section>
-        </Container>
+                        </Section>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </Body>
     </Html>
   )
 }
 
 // ── Styles ───────────────────────────────────────────────────────────────────
+/**
+ * `bgcolor` is typed on <table> but not <td> in React's DOM types. Spread this
+ * helper onto a <td> to carry the presentational attribute without a TS error.
+ */
+const tdBg = (color: string) =>
+  ({ bgcolor: color }) as React.TdHTMLAttributes<HTMLTableCellElement>
+
 const body: React.CSSProperties = {
   backgroundColor: colors.background,
   color: colors.text,
+  colorScheme: "dark light",
   fontFamily: fontSans,
   margin: "0",
-  padding: "24px 0",
+  padding: "0",
 }
 
-const container: React.CSSProperties = {
+const fullBleed: React.CSSProperties = {
+  backgroundColor: colors.background,
+  colorScheme: "dark light",
+  width: "100%",
+}
+
+const fullBleedCell: React.CSSProperties = {
+  backgroundColor: colors.background,
+  padding: "24px 12px",
+}
+
+const cardTable: React.CSSProperties = {
   backgroundColor: colors.surface,
   border: `1px solid ${colors.border}`,
   borderRadius: "12px",
   margin: "0 auto",
   maxWidth: "560px",
-  padding: "32px",
   width: "100%",
+}
+
+const cardCell: React.CSSProperties = {
+  backgroundColor: colors.surface,
+  padding: "32px",
 }
 
 const eyebrow: React.CSSProperties = {
@@ -283,10 +362,15 @@ const paragraph: React.CSSProperties = {
   margin: "0 0 16px",
 }
 
-const codeChip: React.CSSProperties = {
+const codeChipTable: React.CSSProperties = {
   backgroundColor: colors.background,
   border: `1px solid ${colors.border}`,
   borderRadius: "8px",
+  width: "100%",
+}
+
+const codeChipCell: React.CSSProperties = {
+  backgroundColor: colors.background,
   color: colors.text,
   fontFamily: fontMono,
   fontSize: "24px",
