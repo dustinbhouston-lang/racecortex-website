@@ -31,6 +31,10 @@ export const LIFETIME_FREE_COPY =
   "your RaceCortex account stays free for life. No catch and no card required — we just " +
   "want you racing with it and telling us the truth about what works and what doesn't."
 
+// CAN-SPAM mailing address (the PO Box is the correct address for vendor mail per the
+// business-entity record; the physical address is reserved for KYC).
+const COMPANY_ADDRESS = "RaceCortex LLC · PO Box 6331, Siloam Springs, AR 72761"
+
 // ── Brand tokens (IGNITION design system — use exactly) ──────────────────────
 const colors = {
   background: "#0C0C0E", // carbon
@@ -239,6 +243,17 @@ export function BetaInviteEmail({
             </Link>{" "}
             for anything you&apos;d rather send directly.
           </Text>
+          {/* Secondary CTA — Discord blurple, not orange, so it doesn't compete with
+              the single primary "download" CTA. bgcolor reinforces the CSS for Gmail. */}
+          <Section style={{ padding: "8px 0 4px" }}>
+            <Button
+              href={discordUrl}
+              style={discordButton}
+              {...aBg("#5865F2")}
+            >
+              Join our Discord
+            </Button>
+          </Section>
           <Text style={paragraph}>
             Tell us <em>everything</em> — even small stuff (a wrong callout, an odd noise,
             a confusing screen). It all helps.
@@ -279,7 +294,7 @@ export function BetaInviteEmail({
                 Terms
               </Link>
             </Text>
-            <Text style={footerText}>[RaceCortex LLC — mailing address]</Text>
+            <Text style={footerText}>{COMPANY_ADDRESS}</Text>
                         </Section>
                       </td>
                     </tr>
@@ -301,6 +316,13 @@ export function BetaInviteEmail({
  */
 const tdBg = (color: string) =>
   ({ bgcolor: color }) as React.TdHTMLAttributes<HTMLTableCellElement>
+
+/**
+ * Same as `tdBg` but for the <a> a React Email <Button> renders — carries the
+ * presentational `bgcolor` (not in anchor DOM types) so Gmail honors it.
+ */
+const aBg = (color: string) =>
+  ({ bgcolor: color }) as React.AnchorHTMLAttributes<HTMLAnchorElement>
 
 const body: React.CSSProperties = {
   backgroundColor: colors.background,
@@ -393,6 +415,21 @@ const ctaButton: React.CSSProperties = {
   backgroundColor: colors.accent,
   borderRadius: "8px",
   color: colors.background,
+  display: "block",
+  fontFamily: fontSans,
+  fontSize: "16px",
+  fontWeight: 700,
+  padding: "14px 24px",
+  textAlign: "center",
+  textDecoration: "none",
+}
+
+// Secondary CTA — Discord blurple, white text. Mirrors ctaButton but never orange,
+// so the primary "download" CTA stays the only accent button.
+const discordButton: React.CSSProperties = {
+  backgroundColor: "#5865F2",
+  borderRadius: "8px",
+  color: "#FFFFFF",
   display: "block",
   fontFamily: fontSans,
   fontSize: "16px",
