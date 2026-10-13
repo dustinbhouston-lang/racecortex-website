@@ -12,7 +12,9 @@ import { handleDownloadRequest, PRESIGN_EXPIRY_SECONDS, type DownloadDeps } from
 import { DOWNLOAD_UNAVAILABLE_MESSAGE } from "../lib/download/messages"
 
 let failures = 0
+let checks = 0
 function check(name: string, ok: boolean, detail = "") {
+  checks++
   console.log(`${ok ? "PASS" : "FAIL"}  ${name}${detail ? `  — ${detail}` : ""}`)
   if (!ok) failures++
 }
@@ -43,6 +45,46 @@ path: RaceCortex Setup 1.8.0.exe
 sha512: abc==
 releaseDate: '2026-10-12T20:45:42.822Z'
 `
+// Verbatim dist/installer/latest.yml from the 1.8.1 desktop build.
+const REAL_181 = `version: 1.8.1
+files:
+  - url: RaceCortex Setup 1.8.1.exe
+    sha512: lVuQOXZrnN2s32qbzhx2C5VS9dYSO7JYulkShuud0rrREIw07jkFEkdrWqbIPw1S5QcgiQZU6Dqr28S5R/PxYQ==
+    size: 273808936
+path: RaceCortex Setup 1.8.1.exe
+sha512: lVuQOXZrnN2s32qbzhx2C5VS9dYSO7JYulkShuud0rrREIw07jkFEkdrWqbIPw1S5QcgiQZU6Dqr28S5R/PxYQ==
+releaseDate: '2026-10-12T20:45:42.822Z'
+`
+const PAIR = "version: 1.8.0\npath: RaceCortex Setup 1.8.0.exe"
+
+// SITE-LATEST-1-fix regressions: feeds the desktop updater's YAML parser would
+// reject or read differently. Each must be rejected by the parser AND produce a
+// 503 at the route with zero HEAD / presign calls.
+const regressions: Array<[string, string, string]> = [
+  ["Codex #1: quoted duplicate key \"version\"", `version: 1.8.0\n"version": 1.8.1\npath: RaceCortex Setup 1.8.0.exe\n`, "unsupported_line"],
+  ["Codex #2: escaped duplicate \"ver\\u0073ion\"", `${PAIR}\n"ver\\u0073ion": 1.8.1\n`, "unsupported_line"],
+  ["Codex #3: second YAML document (---)", "version: 1.8.0\n---\npath: RaceCortex Setup 1.8.0.exe\n", "unsupported_line"],
+  ["Codex #4: complete feed + dangling files: [", `${PAIR}\nsha512: abc==\nreleaseDate: '2026-10-12T20:45:42.822Z'\nfiles: [\n`, "unsupported_line"],
+  ["escaped duplicate \"p\\u0061th\"", `${PAIR}\n"p\\u0061th": RaceCortex Setup 1.8.0.exe\n`, "unsupported_line"],
+  ["explicit key (? version)", `${PAIR}\n? version\n: 1.8.1\n`, "unsupported_line"],
+  ["anchor (version: &v 1.8.1)", `version: &v 1.8.1\npath: RaceCortex Setup 1.8.1.exe\n`, "invalid_version"],
+  ["alias (version: *v)", `${PAIR}\nversion: *v\n`, "invalid_version"],
+  ["flow mapping ({version: 1.8.1})", `${PAIR}\n{version: 1.8.1}\n`, "unsupported_line"],
+  ["# comment line", `# built by CI\n${PAIR}\n`, "unsupported_line"],
+  ["files url disagrees with path", REAL_181.replace("  - url: RaceCortex Setup 1.8.1.exe", "  - url: RaceCortex Setup 1.7.0.exe"), "url_path_mismatch"],
+  ["unknown top-level key", `${PAIR}\nchannel: beta\n`, "unsupported_line"],
+  ["tab-indented files line", `version: 1.8.0\nfiles:\n\t- url: RaceCortex Setup 1.8.0.exe\npath: RaceCortex Setup 1.8.0.exe\n`, "files_block_invalid"],
+  ["sha512 before - url:", "version: 1.8.1\nfiles:\n    sha512: abc==\n  - url: RaceCortex Setup 1.8.1.exe\n    size: 273808936\npath: RaceCortex Setup 1.8.1.exe\n", "files_block_invalid"],
+  ["size before - url:", "version: 1.8.1\nfiles:\n    size: 273808936\n  - url: RaceCortex Setup 1.8.1.exe\npath: RaceCortex Setup 1.8.1.exe\n", "files_block_invalid"],
+  ["files: block with only fields, no - url:", "version: 1.8.1\nfiles:\n    sha512: abc==\n    size: 273808936\npath: RaceCortex Setup 1.8.1.exe\n", "files_block_invalid"],
+  ["files: with nothing under it", "version: 1.8.1\nfiles:\npath: RaceCortex Setup 1.8.1.exe\n", "files_block_invalid"],
+  ["second - url: item", REAL_181.replace("    size: 273808936\n", "    size: 273808936\n  - url: RaceCortex Setup 1.8.1.exe\n"), "files_block_invalid"],
+  ["duplicate item field (size twice)", REAL_181.replace("    size: 273808936\n", "    size: 273808936\n    size: 1\n"), "files_block_invalid"],
+  ["orphan item field outside any files: block", `${PAIR}\n    size: 1\n`, "unsupported_line"],
+  ["empty line mid-file", "version: 1.8.0\n\npath: RaceCortex Setup 1.8.0.exe\n", "unsupported_line"],
+  ["duplicate releaseDate", `${PAIR}\nreleaseDate: '2026-10-12T20:45:42.822Z'\nreleaseDate: '2026-10-13T00:00:00.000Z'\n`, "duplicate_key"],
+]
+
 {
   const r = parseLatestYml(REAL_FEED)
   check(
@@ -52,8 +94,14 @@ releaseDate: '2026-10-12T20:45:42.822Z'
   )
   const crlf = parseLatestYml(REAL_FEED.replace(/\n/g, "\r\n"))
   check("accept CRLF line endings", crlf.ok && crlf.key === "RaceCortex Setup 1.8.0.exe", JSON.stringify(crlf))
-  const quoted = parseLatestYml(`version: '1.8.0'\npath: "RaceCortex Setup 1.8.0.exe"\n`)
-  check("accept simply-quoted scalars", quoted.ok && quoted.version === "1.8.0", JSON.stringify(quoted))
+  const real = parseLatestYml(REAL_181)
+  check("accept exact real 1.8.1 generator output", real.ok && real.key === "RaceCortex Setup 1.8.1.exe" && real.version === "1.8.1", JSON.stringify(real))
+  const realCrlf = parseLatestYml(REAL_181.replace(/\n/g, "\r\n"))
+  check("accept real 1.8.1 with CRLF", realCrlf.ok && realCrlf.version === "1.8.1", JSON.stringify(realCrlf))
+  const withBlockMap = parseLatestYml(REAL_181.replace("    size: 273808936\n", "    size: 273808936\n    blockMapSize: 291234\n"))
+  check("accept real 1.8.1 with blockMapSize", withBlockMap.ok && withBlockMap.version === "1.8.1", JSON.stringify(withBlockMap))
+  const noTrailingNewline = parseLatestYml(REAL_181.trimEnd())
+  check("accept real 1.8.1 without trailing newline", noTrailingNewline.ok, JSON.stringify(noTrailingNewline))
 }
 
 const rejects: Array<[string, string, string]> = [
@@ -68,8 +116,13 @@ const rejects: Array<[string, string, string]> = [
   ["non-matching name", "version: 1.8.0\npath: PitWall Setup 1.8.0.exe\n", "invalid_path"],
   ["empty text", "", "empty"],
   ["whitespace-only text", "  \n\n", "empty"],
-  ["indented-only version (under files:)", "files:\n  version: 1.8.0\npath: RaceCortex Setup 1.8.0.exe\n", "missing_version"],
-  ["block/flow scalar", "version: [1.8.0]\npath: RaceCortex Setup 1.8.0.exe\n", "unsupported_scalar"],
+  // SITE-LATEST-1-fix (rule 5): was missing_version — an indented non-url line under files: is now a files-block error.
+  ["indented-only version (under files:)", "files:\n  version: 1.8.0\npath: RaceCortex Setup 1.8.0.exe\n", "files_block_invalid"],
+  // SITE-LATEST-1-fix (rule 5): was unsupported_scalar — any non-N.N.N version value is invalid_version.
+  ["block/flow scalar", "version: [1.8.0]\npath: RaceCortex Setup 1.8.0.exe\n", "invalid_version"],
+  // SITE-LATEST-1-fix (rule 5): was an ACCEPT case — the generator never quotes version/path.
+  ["simply-quoted values", `version: '1.8.0'\npath: "RaceCortex Setup 1.8.0.exe"\n`, "invalid_version"],
+  ...regressions,
 ]
 for (const [name, text, reason] of rejects) {
   const r = parseLatestYml(text)
@@ -158,6 +211,38 @@ async function main() {
         logged.some((l) => l.includes(`reason=${reason}`)) &&
         elapsed <= FAST.totalTimeoutMs + 50,
       `status=${res.status} get=${calls.get} head=${calls.head} elapsed=${elapsed}ms`,
+    )
+  }
+
+  // SITE-LATEST-1-fix: every rejected feed → 503 at the route, zero HEAD, zero presign, no retry.
+  for (const [name, text, reason] of regressions) {
+    logged.length = 0
+    const { store, calls } = fakeStore({ get: async () => ({ Body: { transformToString: async () => text } }) })
+    const { deps, spy } = makeDeps({ resolveInstaller: () => resolveInstaller(() => store, FAST) })
+    const res = await handleDownloadRequest(REQ, deps)
+    const body = await res.text()
+    check(
+      `route: ${name} → 503 feed_invalid_${reason}, no HEAD, no presign`,
+      res.status === 503 &&
+        res.headers.get("location") === null &&
+        body.includes(DOWNLOAD_UNAVAILABLE_MESSAGE) &&
+        calls.get === 1 &&
+        calls.head === 0 &&
+        spy.presign.length === 0 &&
+        logged.some((l) => l.includes(`reason=feed_invalid_${reason}`)),
+      `status=${res.status} get=${calls.get} head=${calls.head} presign=${spy.presign.length}`,
+    )
+  }
+
+  // Happy path with the exact real 1.8.1 feed.
+  {
+    const { store, calls } = fakeStore({ get: async () => ({ Body: { transformToString: async () => REAL_181.replace(/\n/g, "\r\n") } }) })
+    const { deps, spy } = makeDeps({ resolveInstaller: () => resolveInstaller(() => store, FAST) })
+    const res = await handleDownloadRequest(REQ, deps)
+    check(
+      "route: real 1.8.1 feed (CRLF) → HEAD + presign RaceCortex Setup 1.8.1.exe for 900 s",
+      res.status === 302 && calls.headKeys[0] === "RaceCortex Setup 1.8.1.exe" && spy.presign[0]?.[0] === "RaceCortex Setup 1.8.1.exe" && spy.presign[0]?.[1] === 900,
+      `presign=${JSON.stringify(spy.presign)}`,
     )
   }
 
@@ -297,7 +382,7 @@ async function main() {
   console.log = realLog
   console.error = realError
   console.warn = realWarn
-  console.log(`\n${failures === 0 ? "ALL PASS" : `${failures} FAILURE(S)`}`)
+  console.log(`\n${checks} checks: ${failures === 0 ? "ALL PASS" : `${failures} FAILURE(S)`}`)
   process.exit(failures === 0 ? 0 : 1)
 }
 
