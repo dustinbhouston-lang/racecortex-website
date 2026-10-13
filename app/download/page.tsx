@@ -1,5 +1,6 @@
 import { createClient } from '@/lib/supabase/server'
 import { getAdminClient } from '@/lib/supabase/admin'
+import { resolveLatestInstaller } from '@/lib/r2/client'
 import { Card, CardContent } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -16,6 +17,11 @@ import { SignOutButton } from '@/components/sign-out-button'
  *
  *   Unauthenticated → Sign in / Sign up tabs
  *   Authenticated   → Download UI (gated on profiles.beta_active)
+ *
+ * Build info (version + installer filename) comes from resolveLatestInstaller()
+ * — the update feed's latest.yml — resolved fresh on every request (this page is
+ * dynamic; nothing is cached). Unavailable → no version shown and the download
+ * button is replaced by a "temporarily unavailable" notice.
  *
  * Error handling:
  *   ?error=session_expired   → shown in unauth branch (above tabs)
@@ -89,11 +95,10 @@ export default async function DownloadPage({ searchParams }: DownloadPageProps) 
   // This is a trusted server-side check — do NOT use the cookie-based `supabase`
   // client here as it would be subject to RLS policies on the profiles table.
   const admin = getAdminClient()
-  const { data: profile } = await admin
-    .from('profiles')
-    .select('beta_active')
-    .eq('id', user.id)
-    .single()
+  const [{ data: profile }, installer] = await Promise.all([
+    admin.from('profiles').select('beta_active').eq('id', user.id).single(),
+    resolveLatestInstaller(),
+  ])
 
   const betaActive = profile?.beta_active === true
 
@@ -127,7 +132,7 @@ export default async function DownloadPage({ searchParams }: DownloadPageProps) 
             {/* Build info */}
             <div>
               <p className="font-mono text-xs font-semibold uppercase tracking-widest text-primary">
-                RaceCortex v1.0.0
+                {installer.status === 'available' ? `RaceCortex v${installer.version}` : 'RaceCortex'}
               </p>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                 Full AI race engineer for iRacing. Real-time race comms,
@@ -139,7 +144,11 @@ export default async function DownloadPage({ searchParams }: DownloadPageProps) 
             <Separator />
 
             {/* Download section — handles beta_active state + post-click downloading view */}
-            <DownloadSection betaActive={betaActive} errorMessage={downloadError} />
+            <DownloadSection
+              betaActive={betaActive}
+              errorMessage={downloadError}
+              installerFileName={installer.status === 'available' ? installer.key : null}
+            />
 
             <Separator />
 

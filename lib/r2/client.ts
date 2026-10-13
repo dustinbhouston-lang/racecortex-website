@@ -3,13 +3,8 @@
 // Importing from a Client Component would expose those secrets to the browser.
 import 'server-only'
 
-import { S3Client } from '@aws-sdk/client-s3'
-
-/**
- * INSTALLER_OBJECT_KEY — byte-exact key of the installer in the R2 bucket.
- * Capital P, capital W, spaces included. Must match the object name precisely.
- */
-export const INSTALLER_OBJECT_KEY = 'RaceCortex Setup 1.0.0.exe'
+import { GetObjectCommand, HeadObjectCommand, S3Client } from '@aws-sdk/client-s3'
+import { resolveInstaller, type InstallerResolution } from './installer'
 
 /**
  * getR2Client() — lazy factory returning an S3Client configured for Cloudflare R2.
@@ -21,6 +16,8 @@ export const INSTALLER_OBJECT_KEY = 'RaceCortex Setup 1.0.0.exe'
  *   region: 'auto'        — Cloudflare selects the region automatically
  *   forcePathStyle: true  — R2 requires path-style URLs (not virtual-hosted)
  *   endpoint              — derived from R2_ACCOUNT_ID
+ *   maxAttempts: 1        — no SDK-internal retries; resolveInstaller() owns the
+ *                           single bounded retry inside its 8 s budget
  */
 export function getR2Client(): S3Client {
   const accountId = process.env.R2_ACCOUNT_ID
@@ -48,6 +45,7 @@ export function getR2Client(): S3Client {
     endpoint: `https://${accountId}.r2.cloudflarestorage.com`,
     credentials: { accessKeyId, secretAccessKey },
     forcePathStyle: true,
+    maxAttempts: 1,
   })
 }
 
@@ -63,4 +61,23 @@ export function getInstallerBucketName(): string {
     )
   }
   return bucket
+}
+
+/**
+ * resolveLatestInstaller() — the single server-side source of truth for which
+ * installer the website serves: the object named by the update feed's
+ * latest.yml in the installer bucket. Used by both the /download page (build
+ * info) and /api/download (re-resolved on every request). Never throws.
+ */
+export function resolveLatestInstaller(): Promise<InstallerResolution> {
+  return resolveInstaller(() => {
+    const r2 = getR2Client()
+    const bucket = getInstallerBucketName()
+    return {
+      getObject: (key, signal) =>
+        r2.send(new GetObjectCommand({ Bucket: bucket, Key: key }), { abortSignal: signal }),
+      headObject: (key, signal) =>
+        r2.send(new HeadObjectCommand({ Bucket: bucket, Key: key }), { abortSignal: signal }),
+    }
+  })
 }

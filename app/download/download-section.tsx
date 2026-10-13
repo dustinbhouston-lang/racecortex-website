@@ -19,6 +19,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Separator } from '@/components/ui/separator'
+import { DOWNLOAD_UNAVAILABLE_MESSAGE } from '@/lib/download/messages'
 import { redeemInviteCode } from './actions'
 
 interface DownloadSectionProps {
@@ -26,6 +27,12 @@ interface DownloadSectionProps {
   betaActive: boolean
   /** Error message from ?error=beta_not_active redirect */
   errorMessage?: string
+  /**
+   * Installer filename resolved server-side from the update feed's latest.yml,
+   * or null when it could not be resolved. Display only — /api/download
+   * re-resolves on its own and never reads this value.
+   */
+  installerFileName: string | null
 }
 
 function RedeemCodeForm() {
@@ -79,7 +86,7 @@ function RedeemCodeForm() {
   )
 }
 
-export function DownloadSection({ betaActive, errorMessage }: DownloadSectionProps) {
+export function DownloadSection({ betaActive, errorMessage, installerFileName }: DownloadSectionProps) {
   const [downloading, setDownloading] = useState(false)
 
   // Post-click: browser has started the download; show instructions
@@ -100,7 +107,7 @@ export function DownloadSection({ betaActive, errorMessage }: DownloadSectionPro
             <li>
               <span className="text-foreground font-medium">1.</span> Run{' '}
               <code className="rounded bg-secondary px-1.5 py-0.5 font-mono text-xs text-foreground">
-                RaceCortex Setup 1.0.0.exe
+                {installerFileName ?? 'the RaceCortex installer'}
               </code>
             </li>
             <li>
@@ -150,6 +157,25 @@ export function DownloadSection({ betaActive, errorMessage }: DownloadSectionPro
     )
   }
 
+  // Beta active but the update feed's installer could not be resolved — missing beats wrong
+  if (!installerFileName) {
+    return (
+      <div className="flex flex-col gap-4">
+        <Alert variant="destructive">
+          <AlertDescription>{DOWNLOAD_UNAVAILABLE_MESSAGE}</AlertDescription>
+        </Alert>
+        <Button
+          disabled
+          size="lg"
+          className="h-12 rounded-sm cursor-not-allowed opacity-50"
+        >
+          <Download size={18} />
+          Download installer
+        </Button>
+      </div>
+    )
+  }
+
   // Beta active — show live download link
   return (
     <div className="flex flex-col gap-4">
@@ -173,7 +199,7 @@ export function DownloadSection({ betaActive, errorMessage }: DownloadSectionPro
         Download installer
       </a>
       <p className="text-xs text-muted-foreground text-center">
-        RaceCortex Setup 1.0.0.exe · Windows 10/11 · ~249 MB
+        {installerFileName} · Windows 10/11 · ~249 MB
       </p>
     </div>
   )
